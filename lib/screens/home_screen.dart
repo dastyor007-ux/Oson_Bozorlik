@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../models/category_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/category_card.dart';
+import 'category_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -186,7 +187,11 @@ class HomeScreen extends StatelessWidget {
           return CategoryCard(
             category: category,
             onTap: () {
-              // TODO: Navigate to category screen
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => CategoryScreen(category: category),
+                ),
+              );
             },
           ).animate(delay: (index * 50).ms).fadeIn().slideX(begin: 0.1);
         }, childCount: CategoryModel.categories.length),
