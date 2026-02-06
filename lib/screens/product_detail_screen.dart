@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import '../models/product_model.dart';
+import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -13,9 +15,15 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-  double _quantity = 0;
+  late double _quantity;
 
   double get _step => widget.product.unit == 'кг' ? 0.5 : 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _quantity = context.read<CartProvider>().getQuantity(widget.product.id);
+  }
 
   String get _quantityLabel {
     if (widget.product.unit == 'кг') {
@@ -379,7 +387,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               onPressed: isOutOfStock || _quantity <= 0
                   ? null
                   : () {
-                      // TODO: Add to cart logic
+                      context.read<CartProvider>().setItem(
+                        widget.product,
+                        _quantity,
+                      );
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(

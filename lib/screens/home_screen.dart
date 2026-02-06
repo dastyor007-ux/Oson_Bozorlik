@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../models/category_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/category_card.dart';
+import 'cart_screen.dart';
 import 'category_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -260,6 +261,16 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
+          _buildDrawerItem(
+            Icons.shopping_cart_outlined,
+            'Корзина',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const CartScreen()));
+            },
+          ),
           _buildDrawerItem(Icons.history_rounded, 'История заказов'),
           _buildDrawerItem(Icons.favorite_outline_rounded, 'Избранное'),
           _buildDrawerItem(Icons.location_on_outlined, 'Мои адреса'),
@@ -296,7 +307,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDrawerItem(IconData icon, String title) {
+  Widget _buildDrawerItem(IconData icon, String title, {VoidCallback? onTap}) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
       leading: Icon(icon, color: AppColors.darkGreen, size: 22),
@@ -313,7 +324,7 @@ class HomeScreen extends StatelessWidget {
         size: 12,
         color: AppColors.textSecondary,
       ),
-      onTap: () {},
+      onTap: onTap ?? () {},
     );
   }
 }

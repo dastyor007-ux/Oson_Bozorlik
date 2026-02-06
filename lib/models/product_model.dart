@@ -456,6 +456,14 @@ class ProductModel {
     ),
   ];
 
+  static ProductModel? findById(String id) {
+    try {
+      return mockProducts.firstWhere((p) => p.id == id);
+    } catch (_) {
+      return null;
+    }
+  }
+
   static List<ProductModel> getByCategoryId(String categoryId) {
     return mockProducts.where((p) => p.categoryId == categoryId).toList();
   }

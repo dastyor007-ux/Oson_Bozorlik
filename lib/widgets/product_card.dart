@@ -1,214 +1,269 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/product_model.dart';
+import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
 
-class ProductCard extends StatefulWidget {
+class ProductCard extends StatelessWidget {
   final ProductModel product;
   final VoidCallback? onTap;
 
   const ProductCard({super.key, required this.product, this.onTap});
 
   @override
-  State<ProductCard> createState() => _ProductCardState();
-}
-
-class _ProductCardState extends State<ProductCard> {
-  double _quantity = 0;
-
-  double get _step => widget.product.unit == 'кг' ? 0.5 : 1.0;
-
-  String get _quantityLabel {
-    if (widget.product.unit == 'кг') {
-      if (_quantity < 1) {
-        return '${(_quantity * 1000).toInt()} г';
-      }
-      return '${_quantity.toStringAsFixed(_quantity == _quantity.roundToDouble() ? 0 : 1)} кг';
-    }
-    return '${_quantity.toInt()} ${widget.product.unit}';
-  }
-
-  String get _totalLabel {
-    final total = (widget.product.price * _quantity).toInt();
-    return '$total SOM';
-  }
-
-  void _increment() {
-    if (!widget.product.isAvailable) return;
-    setState(() => _quantity += _step);
-  }
-
-  void _decrement() {
-    if (_quantity <= 0) return;
-    setState(() {
-      _quantity -= _step;
-      if (_quantity < 0) _quantity = 0;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final isOutOfStock = !widget.product.isAvailable;
+    final isOutOfStock = !product.isAvailable;
 
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: Opacity(
-        opacity: isOutOfStock ? 0.5 : 1.0,
-        child: Container(
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.04),
-                blurRadius: 12,
-                offset: const Offset(0, 4),
-              ),
-            ],
-            border: Border.all(
-              color: AppColors.lightGreen.withValues(alpha: 0.2),
-              width: 1,
-            ),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Product image
-              Expanded(
-                flex: 3,
-                child: Stack(
-                  children: [
-                    Hero(
-                      tag: 'product_image_${widget.product.id}',
-                      child: Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: AppColors.paleGreen.withValues(alpha: 0.5),
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            _getCategoryIcon(widget.product.categoryId),
-                            size: 48,
-                            color: AppColors.accentGreen.withValues(alpha: 0.4),
-                          ),
-                        ),
-                      ),
-                    ),
-                    if (isOutOfStock)
-                      Positioned(
-                        top: 8,
-                        left: 8,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.red.shade50,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            'Нет в наличии',
-                            style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red.shade400,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
+    return Consumer<CartProvider>(
+      builder: (context, cart, child) {
+        final quantity = cart.getQuantity(product.id);
+        final step = product.unit == 'кг' ? 0.5 : 1.0;
+
+        String quantityLabel() {
+          if (product.unit == 'кг') {
+            if (quantity < 1) {
+              return '${(quantity * 1000).toInt()} г';
+            }
+            return '${quantity.toStringAsFixed(quantity == quantity.roundToDouble() ? 0 : 1)} кг';
+          }
+          return '${quantity.toInt()} ${product.unit}';
+        }
+
+        String totalLabel() {
+          final total = (product.price * quantity).toInt();
+          return '$total SOM';
+        }
+
+        void increment() {
+          if (!product.isAvailable) return;
+          cart.setItem(product, quantity + step);
+        }
+
+        void decrement() {
+          if (quantity <= 0) return;
+          if (quantity <= step) {
+            _showRemoveDialog(context, product, cart);
+          } else {
+            cart.setItem(product, quantity - step);
+          }
+        }
+
+        return GestureDetector(
+          onTap: onTap,
+          child: Opacity(
+            opacity: isOutOfStock ? 0.5 : 1.0,
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 12,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+                border: Border.all(
+                  color: AppColors.lightGreen.withValues(alpha: 0.2),
+                  width: 1,
                 ),
               ),
-              // Product info
-              Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.product.name,
-                        style: const TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.textPrimary,
-                          height: 1.2,
-                        ),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${widget.product.price.toInt()} SOM / ${widget.product.unit == 'кг' ? '1 кг' : widget.product.unit}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.darkGreen,
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.paleGreen,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Center(
-                          child: Text(
-                            '$_quantityLabel · $_totalLabel',
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.darkGreen,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Product image
+                  Expanded(
+                    flex: 3,
+                    child: Stack(
+                      children: [
+                        Hero(
+                          tag: 'product_image_${product.id}',
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              color: AppColors.paleGreen.withValues(alpha: 0.5),
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 6),
-                      Row(
-                        children: [
-                          _buildQuantityButton(
-                            icon: Icons.remove,
-                            onTap: _quantity > 0 && !isOutOfStock
-                                ? _decrement
-                                : null,
-                          ),
-                          Expanded(
                             child: Center(
-                              child: Text(
-                                _quantityLabel,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: _quantity > 0
-                                      ? AppColors.textPrimary
-                                      : AppColors.textSecondary,
+                              child: Icon(
+                                _getCategoryIcon(product.categoryId),
+                                size: 48,
+                                color: AppColors.accentGreen.withValues(
+                                  alpha: 0.4,
                                 ),
                               ),
                             ),
                           ),
-                          _buildQuantityButton(
-                            icon: Icons.add,
-                            onTap: !isOutOfStock ? _increment : null,
-                            isPrimary: true,
+                        ),
+                        if (isOutOfStock)
+                          Positioned(
+                            top: 8,
+                            left: 8,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.red.shade50,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                'Нет в наличии',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.red.shade400,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                  // Product info
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            product.name,
+                            style: const TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary,
+                              height: 1.2,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '${product.price.toInt()} SOM / ${product.unit == 'кг' ? '1 кг' : product.unit}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.darkGreen,
+                            ),
+                          ),
+                          const Spacer(),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.paleGreen,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Center(
+                              child: Text(
+                                '${quantityLabel()} · ${totalLabel()}',
+                                style: const TextStyle(
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.darkGreen,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              _buildQuantityButton(
+                                icon: Icons.remove,
+                                onTap: quantity > 0 && !isOutOfStock
+                                    ? decrement
+                                    : null,
+                              ),
+                              Expanded(
+                                child: Center(
+                                  child: Text(
+                                    quantityLabel(),
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: quantity > 0
+                                          ? AppColors.textPrimary
+                                          : AppColors.textSecondary,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              _buildQuantityButton(
+                                icon: Icons.add,
+                                onTap: !isOutOfStock ? increment : null,
+                                isPrimary: true,
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showRemoveDialog(
+    BuildContext context,
+    ProductModel product,
+    CartProvider cart,
+  ) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text(
+          'Удалить товар?',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
           ),
         ),
+        content: Text(
+          'Вы уверены, что хотите удалить "${product.name}" из корзины?',
+          style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(
+              'Отмена',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              cart.removeItem(product.id);
+              Navigator.of(ctx).pop();
+            },
+            child: Text(
+              'Да',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Colors.red.shade400,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
