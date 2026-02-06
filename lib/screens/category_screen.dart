@@ -5,6 +5,7 @@ import '../models/product_model.dart';
 import '../models/subcategory_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/product_card.dart';
+import 'product_detail_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
   final CategoryModel category;
@@ -266,7 +267,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
               return ProductCard(
                     product: products[index],
                     onTap: () {
-                      // TODO: Navigate to product details
+                      Navigator.of(context).push(
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 400),
+                          reverseTransitionDuration: const Duration(
+                            milliseconds: 350,
+                          ),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  ProductDetailScreen(product: products[index]),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                        ),
+                      );
                     },
                   )
                   .animate(delay: (index * 50).ms)

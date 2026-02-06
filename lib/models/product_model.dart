@@ -7,6 +7,7 @@ class ProductModel {
   final String imagePath;
   final bool isAvailable;
   final String unit; // 'кг', 'шт', etc.
+  final String description;
 
   const ProductModel({
     required this.id,
@@ -17,6 +18,7 @@ class ProductModel {
     required this.imagePath,
     this.isAvailable = true,
     this.unit = 'кг',
+    this.description = '',
   });
 
   static const List<ProductModel> mockProducts = [
@@ -28,6 +30,8 @@ class ProductModel {
       name: 'Яблоко золотое местное',
       price: 12000,
       imagePath: 'assets/images/apple_gold.png',
+      description:
+          'Сочное яблоко золотистого сорта, выращенное в местных садах. Отличается сладким вкусом с лёгкой кислинкой и хрустящей текстурой.',
     ),
     ProductModel(
       id: '2',
@@ -36,6 +40,8 @@ class ProductModel {
       name: 'Груша Дюшес',
       price: 15000,
       imagePath: 'assets/images/pear.png',
+      description:
+          'Ароматная груша сорта Дюшес с нежной маслянистой мякотью. Идеально подходит для свежего употребления и десертов.',
     ),
     ProductModel(
       id: '3',
@@ -44,6 +50,8 @@ class ProductModel {
       name: 'Виноград кишмиш',
       price: 22000,
       imagePath: 'assets/images/grape.png',
+      description:
+          'Бескосточковый виноград сорта кишмиш. Сладкие и сочные ягоды, богатые витаминами и антиоксидантами.',
     ),
     // Фрукты — Цитрусовые
     ProductModel(
@@ -53,6 +61,8 @@ class ProductModel {
       name: 'Апельсин импортный',
       price: 25000,
       imagePath: 'assets/images/orange.png',
+      description:
+          'Крупный сочный апельсин с ярким цитрусовым ароматом. Богат витамином C, идеален для свежевыжатого сока.',
     ),
     ProductModel(
       id: '5',
@@ -61,6 +71,8 @@ class ProductModel {
       name: 'Лимон Ташкент',
       price: 18000,
       imagePath: 'assets/images/lemon.png',
+      description:
+          'Ташкентский лимон с тонкой кожурой и насыщенным кислым вкусом. Незаменим на кухне и для приготовления напитков.',
     ),
     ProductModel(
       id: '6',
@@ -69,6 +81,8 @@ class ProductModel {
       name: 'Мандарин Марокко',
       price: 28000,
       imagePath: 'assets/images/mandarin.png',
+      description:
+          'Сладкие марокканские мандарины с тонкой кожурой, легко чистятся. Отличный перекус, богатый витаминами.',
     ),
     // Фрукты — Тропические
     ProductModel(
@@ -79,6 +93,8 @@ class ProductModel {
       price: 18000,
       imagePath: 'assets/images/banana.png',
       isAvailable: false,
+      description:
+          'Спелые бананы из Эквадора. Сладкие, питательные и богатые калием — идеальный источник энергии.',
     ),
     ProductModel(
       id: '8',
@@ -87,6 +103,8 @@ class ProductModel {
       name: 'Манго Индия',
       price: 45000,
       imagePath: 'assets/images/mango.png',
+      description:
+          'Экзотическое индийское манго с сочной сладкой мякотью и ярким тропическим ароматом.',
     ),
     ProductModel(
       id: '9',
@@ -95,6 +113,8 @@ class ProductModel {
       name: 'Ананас',
       price: 38000,
       imagePath: 'assets/images/pineapple.png',
+      description:
+          'Свежий тропический ананас с кисло-сладким вкусом. Идеально подходит для десертов и фруктовых салатов.',
     ),
 
     // Овощи — Корнеплоды
@@ -105,6 +125,8 @@ class ProductModel {
       name: 'Картофель местный',
       price: 5000,
       imagePath: 'assets/images/potato.png',
+      description:
+          'Местный картофель отборного качества. Отлично подходит для жарки, варки и запекания.',
     ),
     ProductModel(
       id: '11',
@@ -113,6 +135,8 @@ class ProductModel {
       name: 'Морковь свежая',
       price: 6000,
       imagePath: 'assets/images/carrot.png',
+      description:
+          'Свежая сочная морковь, выращенная на местных фермах. Богата бета-каротином и клетчаткой.',
     ),
     ProductModel(
       id: '12',
@@ -121,6 +145,8 @@ class ProductModel {
       name: 'Свёкла',
       price: 4500,
       imagePath: 'assets/images/beet.png',
+      description:
+          'Столовая свёкла насыщенного бордового цвета. Используется для салатов, борщей и свежевыжатых соков.',
     ),
     // Овощи — Зелень
     ProductModel(
@@ -131,6 +157,8 @@ class ProductModel {
       price: 3000,
       imagePath: 'assets/images/dill.png',
       unit: 'шт',
+      description:
+          'Свежий ароматный укроп. Незаменимая зелень для салатов, супов и гарниров.',
     ),
     ProductModel(
       id: '14',
@@ -140,6 +168,8 @@ class ProductModel {
       price: 3000,
       imagePath: 'assets/images/parsley.png',
       unit: 'шт',
+      description:
+          'Свежая петрушка с ярким вкусом и ароматом. Отлично дополняет блюда и салаты.',
     ),
     // Овощи — Томаты и огурцы
     ProductModel(
@@ -149,6 +179,8 @@ class ProductModel {
       name: 'Помидоры розовые',
       price: 14000,
       imagePath: 'assets/images/tomato.png',
+      description:
+          'Розовые помидоры с нежной мякотью и сладковатым вкусом. Отлично подходят для салатов и нарезки.',
     ),
     ProductModel(
       id: '16',
@@ -157,6 +189,8 @@ class ProductModel {
       name: 'Огурцы свежие',
       price: 10000,
       imagePath: 'assets/images/cucumber.png',
+      description:
+          'Хрустящие свежие огурцы с насыщенным вкусом. Идеальны для салатов и лёгких закусок.',
     ),
 
     // Масло, яйца, молоко
@@ -168,6 +202,8 @@ class ProductModel {
       price: 12000,
       imagePath: 'assets/images/milk.png',
       unit: 'л',
+      description:
+          'Натуральное коровье молоко жирностью 3.2%. Свежее, пастеризованное, без добавок.',
     ),
     ProductModel(
       id: '18',
@@ -177,6 +213,8 @@ class ProductModel {
       price: 11000,
       imagePath: 'assets/images/kefir.png',
       unit: 'л',
+      description:
+          'Лёгкий кефир жирностью 1%. Полезный кисломолочный продукт для здорового пищеварения.',
     ),
     ProductModel(
       id: '19',
@@ -186,6 +224,8 @@ class ProductModel {
       price: 16000,
       imagePath: 'assets/images/eggs.png',
       unit: 'шт',
+      description:
+          'Свежие куриные яйца категории С1. Упаковка 10 штук. Незаменимый продукт на каждый день.',
     ),
     ProductModel(
       id: '20',
@@ -195,6 +235,8 @@ class ProductModel {
       price: 18000,
       imagePath: 'assets/images/butter.png',
       unit: 'шт',
+      description:
+          'Натуральное сливочное масло 82.5% жирности. Изготовлено из свежих сливок.',
     ),
     ProductModel(
       id: '21',
@@ -204,6 +246,8 @@ class ProductModel {
       price: 22000,
       imagePath: 'assets/images/oil.png',
       unit: 'шт',
+      description:
+          'Рафинированное подсолнечное масло для жарки и заправки. Без запаха и осадка.',
     ),
 
     // Мука и зерновые
@@ -215,6 +259,8 @@ class ProductModel {
       price: 8000,
       imagePath: 'assets/images/flour.png',
       unit: 'шт',
+      description:
+          'Пшеничная мука высшего сорта. Идеальна для выпечки хлеба, лепёшек и кондитерских изделий.',
     ),
     ProductModel(
       id: '23',
@@ -223,6 +269,8 @@ class ProductModel {
       name: 'Рис длиннозёрный',
       price: 15000,
       imagePath: 'assets/images/rice.png',
+      description:
+          'Длиннозёрный рис премиум качества. Рассыпчатый после варки, подходит для плова и гарниров.',
     ),
     ProductModel(
       id: '24',
@@ -232,6 +280,8 @@ class ProductModel {
       price: 14000,
       imagePath: 'assets/images/buckwheat.png',
       unit: 'шт',
+      description:
+          'Гречневая крупа ядрица. Богата железом и белком, отличный гарнир для здорового питания.',
     ),
     ProductModel(
       id: '25',
@@ -241,6 +291,8 @@ class ProductModel {
       price: 9000,
       imagePath: 'assets/images/pasta.png',
       unit: 'шт',
+      description:
+          'Спагетти из твёрдых сортов пшеницы. Быстро готовятся, сохраняют форму при варке.',
     ),
 
     // Чаи и кофе
@@ -252,6 +304,8 @@ class ProductModel {
       price: 12000,
       imagePath: 'assets/images/green_tea.png',
       unit: 'шт',
+      description:
+          'Листовой зелёный чай с мягким вкусом и освежающим ароматом. Богат антиоксидантами.',
     ),
     ProductModel(
       id: '27',
@@ -261,6 +315,8 @@ class ProductModel {
       price: 10000,
       imagePath: 'assets/images/black_tea.png',
       unit: 'шт',
+      description:
+          'Классический чёрный чай с насыщенным вкусом и бодрящим эффектом. Идеален для утреннего чаепития.',
     ),
     ProductModel(
       id: '28',
@@ -270,6 +326,8 @@ class ProductModel {
       price: 35000,
       imagePath: 'assets/images/coffee.png',
       unit: 'шт',
+      description:
+          'Молотый кофе средней обжарки из отборных зёрен арабики. Насыщенный аромат и глубокий вкус.',
     ),
     ProductModel(
       id: '29',
@@ -279,6 +337,8 @@ class ProductModel {
       price: 28000,
       imagePath: 'assets/images/instant_coffee.png',
       unit: 'шт',
+      description:
+          'Растворимый кофе для быстрого приготовления. Сохраняет аромат и вкус натурального кофе.',
     ),
 
     // Средства гигиены
@@ -290,6 +350,8 @@ class ProductModel {
       price: 5000,
       imagePath: 'assets/images/soap.png',
       unit: 'шт',
+      description:
+          'Туалетное мыло с нежным ароматом. Бережно очищает кожу, не пересушивая её.',
     ),
     ProductModel(
       id: '31',
@@ -299,6 +361,8 @@ class ProductModel {
       price: 15000,
       imagePath: 'assets/images/toothpaste.png',
       unit: 'шт',
+      description:
+          'Зубная паста с фтором для комплексной защиты зубов и дёсен. Освежает дыхание.',
     ),
     ProductModel(
       id: '32',
@@ -308,6 +372,8 @@ class ProductModel {
       price: 12000,
       imagePath: 'assets/images/dish_soap.png',
       unit: 'шт',
+      description:
+          'Эффективное средство для мытья посуды. Легко удаляет жир, бережно к коже рук.',
     ),
     ProductModel(
       id: '33',
@@ -317,6 +383,8 @@ class ProductModel {
       price: 25000,
       imagePath: 'assets/images/detergent.png',
       unit: 'шт',
+      description:
+          'Универсальный стиральный порошок для всех типов тканей. Эффективно удаляет пятна при любой температуре.',
     ),
 
     // Напитки
@@ -328,6 +396,8 @@ class ProductModel {
       price: 4000,
       imagePath: 'assets/images/water.png',
       unit: 'шт',
+      description:
+          'Чистая питьевая вода из горных источников. Без газа, идеальна для ежедневного потребления.',
     ),
     ProductModel(
       id: '35',
@@ -337,6 +407,8 @@ class ProductModel {
       price: 5000,
       imagePath: 'assets/images/sparkling_water.png',
       unit: 'шт',
+      description:
+          'Природная газированная вода с приятным освежающим вкусом. Утоляет жажду в любое время.',
     ),
     ProductModel(
       id: '36',
@@ -346,6 +418,8 @@ class ProductModel {
       price: 14000,
       imagePath: 'assets/images/apple_juice.png',
       unit: 'шт',
+      description:
+          'Натуральный яблочный сок прямого отжима. Без добавления сахара и консервантов.',
     ),
     ProductModel(
       id: '37',
@@ -355,6 +429,8 @@ class ProductModel {
       price: 16000,
       imagePath: 'assets/images/orange_juice.png',
       unit: 'шт',
+      description:
+          'Свежий апельсиновый сок, богатый витамином C. Яркий цитрусовый вкус для бодрого утра.',
     ),
     ProductModel(
       id: '38',
@@ -364,6 +440,8 @@ class ProductModel {
       price: 10000,
       imagePath: 'assets/images/cola.png',
       unit: 'шт',
+      description:
+          'Классическая кола с карамельным вкусом и приятной газацией. Подавать охлаждённой.',
     ),
     ProductModel(
       id: '39',
@@ -373,6 +451,8 @@ class ProductModel {
       price: 7000,
       imagePath: 'assets/images/lemonade.png',
       unit: 'шт',
+      description:
+          'Освежающий лимонад с натуральным вкусом лимона. Лёгкая газация, идеален в жаркую погоду.',
     ),
   ];
 

@@ -77,19 +77,22 @@ class _ProductCardState extends State<ProductCard> {
                 flex: 3,
                 child: Stack(
                   children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: AppColors.paleGreen.withValues(alpha: 0.5),
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(20),
+                    Hero(
+                      tag: 'product_image_${widget.product.id}',
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: AppColors.paleGreen.withValues(alpha: 0.5),
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
                         ),
-                      ),
-                      child: Center(
-                        child: Icon(
-                          _getCategoryIcon(widget.product.categoryId),
-                          size: 48,
-                          color: AppColors.accentGreen.withValues(alpha: 0.4),
+                        child: Center(
+                          child: Icon(
+                            _getCategoryIcon(widget.product.categoryId),
+                            size: 48,
+                            color: AppColors.accentGreen.withValues(alpha: 0.4),
+                          ),
                         ),
                       ),
                     ),
