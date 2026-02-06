@@ -125,7 +125,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return SliverAppBar(
       pinned: true,
       floating: true,
-      backgroundColor: AppColors.white.withOpacity(0.9),
+      backgroundColor: AppColors.white.withValues(alpha: 0.9),
       elevation: 0,
       scrolledUnderElevation: 2,
       surfaceTintColor: AppColors.white,
@@ -133,10 +133,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
         icon: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: AppColors.accentGreen.withOpacity(0.15),
+            color: AppColors.accentGreen.withValues(alpha: 0.15),
             shape: BoxShape.circle,
             border: Border.all(
-              color: AppColors.lightGreen.withOpacity(0.2),
+              color: AppColors.lightGreen.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -165,10 +165,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
             icon: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.accentGreen.withOpacity(0.15),
+                color: AppColors.accentGreen.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppColors.lightGreen.withOpacity(0.2),
+                  color: AppColors.lightGreen.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
@@ -242,7 +242,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textSecondary.withOpacity(0.6),
+                    color: AppColors.textSecondary.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -342,12 +342,12 @@ class _SubcategoryTabsDelegate extends SliverPersistentHeaderDelegate {
                     decoration: BoxDecoration(
                       color: isSelected
                           ? AppColors.accentGreen
-                          : AppColors.accentGreen.withOpacity(0.08),
+                          : AppColors.accentGreen.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
                         color: isSelected
                             ? AppColors.accentGreen
-                            : AppColors.lightGreen.withOpacity(0.3),
+                            : AppColors.lightGreen.withValues(alpha: 0.3),
                         width: 1,
                       ),
                     ),

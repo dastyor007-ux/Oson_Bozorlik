@@ -46,7 +46,7 @@ class HomeScreen extends StatelessWidget {
     return SliverAppBar(
       pinned: true,
       floating: true,
-      backgroundColor: AppColors.white.withOpacity(0.9),
+      backgroundColor: AppColors.white.withValues(alpha: 0.9),
       elevation: 0,
       scrolledUnderElevation: 2,
       surfaceTintColor: AppColors.white,
@@ -55,10 +55,10 @@ class HomeScreen extends StatelessWidget {
           icon: Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.accentGreen.withOpacity(0.15),
+              color: AppColors.accentGreen.withValues(alpha: 0.15),
               shape: BoxShape.circle,
               border: Border.all(
-                color: AppColors.lightGreen.withOpacity(0.2),
+                color: AppColors.lightGreen.withValues(alpha: 0.2),
                 width: 1,
               ),
             ),
@@ -78,12 +78,12 @@ class HomeScreen extends StatelessWidget {
             color: AppColors.white,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: AppColors.lightGreen.withOpacity(0.2),
+              color: AppColors.lightGreen.withValues(alpha: 0.2),
               width: 1,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withValues(alpha: 0.03),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
@@ -123,10 +123,10 @@ class HomeScreen extends StatelessWidget {
             icon: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.accentGreen.withOpacity(0.15),
+                color: AppColors.accentGreen.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: AppColors.lightGreen.withOpacity(0.2),
+                  color: AppColors.lightGreen.withValues(alpha: 0.2),
                   width: 1,
                 ),
               ),
@@ -213,7 +213,7 @@ class HomeScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.fromLTRB(24, 60, 24, 32),
             decoration: BoxDecoration(
-              color: AppColors.lightGreen.withOpacity(0.2),
+              color: AppColors.lightGreen.withValues(alpha: 0.2),
               borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(32),
               ),
@@ -285,7 +285,7 @@ class HomeScreen extends StatelessWidget {
                   'Oson Bozorlik 2026',
                   style: TextStyle(
                     fontSize: 11,
-                    color: AppColors.textSecondary.withOpacity(0.5),
+                    color: AppColors.textSecondary.withValues(alpha: 0.5),
                   ),
                 ),
               ],

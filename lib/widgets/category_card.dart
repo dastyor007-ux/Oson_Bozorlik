@@ -21,13 +21,13 @@ class CategoryCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.03),
+              color: Colors.black.withValues(alpha: 0.03),
               blurRadius: 15,
               offset: const Offset(0, 5),
             ),
           ],
           border: Border.all(
-            color: AppColors.lightGreen.withOpacity(0.2),
+            color: AppColors.lightGreen.withValues(alpha: 0.2),
             width: 1,
           ),
         ),
@@ -37,7 +37,7 @@ class CategoryCard extends StatelessWidget {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: AppColors.accentGreen.withOpacity(0.15),
+                color: AppColors.accentGreen.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Icon(category.icon, color: AppColors.darkGreen, size: 32),
@@ -74,7 +74,7 @@ class CategoryCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.accentGreen.withOpacity(0.1),
+                color: AppColors.accentGreen.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: const Icon(

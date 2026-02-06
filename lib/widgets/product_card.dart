@@ -59,13 +59,13 @@ class _ProductCardState extends State<ProductCard> {
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.04),
+                color: Colors.black.withValues(alpha: 0.04),
                 blurRadius: 12,
                 offset: const Offset(0, 4),
               ),
             ],
             border: Border.all(
-              color: AppColors.lightGreen.withOpacity(0.2),
+              color: AppColors.lightGreen.withValues(alpha: 0.2),
               width: 1,
             ),
           ),
@@ -80,7 +80,7 @@ class _ProductCardState extends State<ProductCard> {
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: AppColors.paleGreen.withOpacity(0.5),
+                        color: AppColors.paleGreen.withValues(alpha: 0.5),
                         borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(20),
                         ),
@@ -89,7 +89,7 @@ class _ProductCardState extends State<ProductCard> {
                         child: Icon(
                           _getCategoryIcon(widget.product.categoryId),
                           size: 48,
-                          color: AppColors.accentGreen.withOpacity(0.4),
+                          color: AppColors.accentGreen.withValues(alpha: 0.4),
                         ),
                       ),
                     ),
@@ -225,8 +225,8 @@ class _ProductCardState extends State<ProductCard> {
           color: isEnabled
               ? (isPrimary
                     ? AppColors.accentGreen
-                    : AppColors.accentGreen.withOpacity(0.15))
-              : AppColors.divider.withOpacity(0.3),
+                    : AppColors.accentGreen.withValues(alpha: 0.15))
+              : AppColors.divider.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Icon(
@@ -234,7 +234,7 @@ class _ProductCardState extends State<ProductCard> {
           size: 16,
           color: isEnabled
               ? (isPrimary ? AppColors.white : AppColors.darkGreen)
-              : AppColors.textSecondary.withOpacity(0.4),
+              : AppColors.textSecondary.withValues(alpha: 0.4),
         ),
       ),
     );
