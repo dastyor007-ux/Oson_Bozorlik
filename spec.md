@@ -1,257 +1,257 @@
-# Техническое задание: Мобильное приложение "Oson Bozorlik"
+# Technical Specification: "Oson Bozorlik" Mobile App
 
-## Общее описание
-Проект представляет собой мобильное приложение для интернет-магазина продуктов питания, разработанное на фреймворке **Flutter**. Основная цель приложения — предоставить пользователям удобный интерфейс для выбора и покупки товаров по категориям.
+## General Description
+The project is a mobile application for an online grocery store, developed using the **Flutter** framework. The primary goal of the application is to provide users with a convenient interface for selecting and purchasing products by category.
 
-- **Валюта приложения**: Узбекский сум (**SOM**). Во всем приложении цены указываются в формате "Цена SOM" (например, 5600 SOM).
+- **App Currency**: Uzbekistani Som (**SOM**). Throughout the application, prices are displayed in the format "Price SOM" (e.g., 5600 SOM).
 
-## Главный экран (Main Screen)
+## Main Screen
 
-### Хедер (Header / AppBar)
-- **Слева**: Иконка меню (гамбургер, три горизонтальные линии).
-- **По центру**: Виджет выбора адреса.
-  - Состав: Иконка местоположения (pin/place), текст "Выберите адрес", иконка стрелки вниз (dropdown).
-  - При нажатии открывается функционал выбора или смены адреса доставки.
-- **Справа**: Иконка уведомлений (колокольчик).
+### Header (Header / AppBar)
+- **Left**: Menu icon (hamburger, three horizontal lines).
+- **Center**: Address selection widget.
+  - Components: Location icon (pin/place), "Select Address" text, down arrow icon (dropdown).
+  - Action: Opens functionality to select or change the delivery address.
+- **Right**: Notifications icon (bell).
 
-### Основной контент
-Главный экран состоит из блоков категорий товаров. Каждый блок является кликабельным и ведет в соответствующий раздел каталога.
+### Main Content
+The main screen consists of product category blocks. Each block is clickable and leads to the corresponding catalog section.
 
-#### Список категорий:
-1.  **Фрукты**
-2.  **Овощи**
-3.  **Масло, яйца, молоко и другие продукты**
-4.  **Мука и зерновые продукты**
-5.  **Чаи и кофе**
-6.  **Средства гигиены и чистящие средства**
-7.  **Напитки**
+#### List of Categories:
+1.  **Fruits**
+2.  **Vegetables**
+3.  **Oil, Eggs, Milk, and Other Products**
+4.  **Flour and Grain Products**
+5.  **Teas and Coffee**
+6.  **Hygiene and Cleaning Products**
+7.  **Beverages**
 
-*Примечание: Для каждого блока категории предусмотрены готовые фотографии.*
+*Note: Ready-made photographs are provided for each category block.*
 
-### Плавающая кнопка поиска (Floating Search Button)
-- В нижней правой части экрана должна располагаться кнопка поиска.
-- Кнопка должна быть "приклеена" (pinned) и перемещаться (float) поверх контента при скролле.
-- Иконка: Поиск (лупа).
+### Floating Search Button
+- A search button should be located in the bottom right part of the screen.
+- The button should be pinned and float over the content during scrolling.
+- Icon: Search (magnifying glass).
 
-## Навигация
-- Нажатие на категорию -> Переход к экрану категории (Category Screen).
-- Нажатие на карточку товара -> Переход к экрану деталей товара (Product Details Screen).
-- Нажатие на иконку меню -> Открытие бокового меню (Drawer).
-- Нажатие на поиск -> Переход к экрану поиска товаров.
+## Navigation
+- Tapping a category -> Navigate to the Category Screen.
+- Tapping a product card -> Navigate to the Product Details Screen.
+- Tapping the menu icon -> Open the side menu (Drawer).
+- Tapping search -> Navigate to the Search Screen.
 
-## Экран категории (Category Screen)
-Этот экран открывается при выборе конкретной категории на главном экране.
+## Category Screen
+This screen opens when a specific category is selected on the main screen.
 
-### Хедер (Header / AppBar)
-- **Слева**: Иконка "Назад" (стрелка влево).
-- **По центру**: Название текущей категории (например, "Фрукты").
-- **Справа**: Иконка "Поиск" (лупа).
+### Header (Header / AppBar)
+- **Left**: "Back" icon (left arrow).
+- **Center**: Current category name (e.g., "Fruits").
+- **Right**: "Search" icon (magnifying glass).
 
-### Подкатегории (Tabs)
-- Горизонтальный скроллящийся список табов (подкатегорий) под хедером.
-- **Первый таб**: Название основной категории (например, "Все фрукты" или просто "Фрукты"), отображает весь список товаров.
-- **Остальные табы**: Подкатегории (например, "Цитрусовые", "Тропические фрукты" и т.д.).
-- **Логика работы**: При нажатии на таб происходит автоматический скролл (anchor scroll) к соответствующему разделу на странице.
+### Subcategories (Tabs)
+- Horizontal scrolling list of tabs (subcategories) under the header.
+- **First Tab**: Main category name (e.g., "All Fruits" or just "Fruits"), displays the entire product list.
+- **Other Tabs**: Subcategories (e.g., "Citrus", "Tropical Fruits", etc.).
+- **Logic**: Tapping a tab triggers an automatic scroll (anchor scroll) to the corresponding section on the page.
 
-### Список товаров (Product Grid)
-- Отображение товаров в виде сетки: **2 карточки в ряд**.
-- Порядок отображения: Сначала идут товары общей категории, затем блоки подкатегорий (согласно табам).
+### Product Grid
+- Products displayed in a grid: **2 cards per row**.
+- Display Order: General category products first, followed by subcategory blocks (according to tabs).
 
-### Карточка товара (Product Card)
-Состав карточки:
-1.  **Изображение товара**.
-2.  **Название**: Например, "Яблоко золотое местное".
-3.  **Цена**: Указывается цена за единицу измерения (например, за 1 кг).
-4.  **Управление весом/количеством**:
-    - Шаг изменения: **500 грамм** (для весовых товаров).
-    - Индикатор набранного веса/суммы: Располагается на подложке бледного-бледно-зеленого цвета. Показывает текущую сумму за выбранный вес данного товара.
-5.  **Статус "Нет в наличии"**:
-    - Если товар недоступен, карточка становится бледной (полупрозрачной).
-    - Поверх или снизу выводится текст: "Нет в наличии".
-    - Кнопки добавления/изменения веса блокируются.
+### Product Card
+Card Components:
+1.  **Product Image**.
+2.  **Name**: e.g., "Local Golden Apple".
+3.  **Price**: Price per unit of measurement (e.g., per 1 kg).
+4.  **Weight/Quantity Management**:
+    - Step increment: **500 grams** (for weight-based products).
+    - Weight/Total indicator: Located on a pale-pale-green background. Shows the current total for the selected weight of this product.
+5.  **"Out of Stock" Status**:
+    - If a product is unavailable, the card becomes faded (semi-transparent).
+    - "Out of Stock" text is displayed over or under the card.
+    - Increment/decrement buttons are disabled.
 
-## Экран деталей товара (Product Details Screen)
-Открывается при нажатии на карточку товара.
+## Product Details Screen
+Opens when a product card is tapped.
 
-### Хедер (Header / AppBar)
-- **Слева**: Иконка "Назад" (стрелка влево).
-- **Справа**: Опционально иконка "Поделиться" или "Избранное" (по необходимости).
+### Header (Header / AppBar)
+- **Left**: "Back" icon (left arrow).
+- **Right**: Optional "Share" or "Favorite" icon (as needed).
 
-### Контент экрана
-1.  **Большое изображение товара**:
-    - Занимает примерно **50% высоты экрана**.
-    - Качественное фото фрукта/продукта.
-2.  **Информационный блок**:
-    - **Название**: Крупный шрифт (например, "Apple Crebston местный").
-    - **Цена**: Цена за килограмм (или другую единицу измерения).
-    - **Описание**: Текстовый блок с описанием сорта, вкусовых качеств или других характеристик товара.
-3.  **Нижняя панель (Bottom Action Bar)**:
-    - **Выбор веса**: Управление количеством с шагом **500 грамм**.
-    - **Кнопка "Добавить в корзину"**: Яркая, акцентная кнопка для подтверждения выбора.
+### Screen Content
+1.  **Large Product Image**:
+    - Occupies approximately **50% of the screen height**.
+    - High-quality photo of the fruit/product.
+2.  **Information Block**:
+    - **Name**: Large font (e.g., "Local Apple Crebston").
+    - **Price**: Price per kilogram (or other unit).
+    - **Description**: Text block with a description of the variety, taste qualities, or other product characteristics.
+3.  **Bottom Action Bar**:
+    - **Weight Selection**: Quantity management with a **500-gram** step.
+    - **"Add to Cart" Button**: Bright, accent button to confirm selection.
 
-## Экран поиска (Search Screen)
-Открывается при нажатии на плавающую кнопку поиска или иконку поиска в хедере.
+## Search Screen
+Opens when the floating search button or the search icon in the header is tapped.
 
-### Хедер (Header / AppBar)
-- **Слева**: Иконка "Назад" (стрелка влево).
-- **По центру**: Поле ввода (Input) с текстом-подсказкой "Поиск".
-- **Логика ввода**: 
-    - При появлении текста в поле ввода, справа в инпуте появляется иконка "Крестик" (Clear icon) для быстрой очистки введенного запроса.
+### Header (Header / AppBar)
+- **Left**: "Back" icon (left arrow).
+- **Center**: Input field with "Search" placeholder text.
+- **Input Logic**: 
+    - When text appears in the input field, a "Clear" icon (X) appears on the right of the input for quick clearing.
 
-### Результаты поиска
-- **Живой поиск**: Поиск должен начинаться сразу при вводе символов.
-- **Логика фильтрации**: 
-    - Поиск осуществляется по любому совпадению в названии товара (даже по одной букве).
-    - Если совпадения найдены, отображается список всех подходящих товаров (в формате карточек, аналогично экрану категорий).
-- **Пустое состояние (Empty State)**: 
-    - Если по введенному запросу ничего не найдено, отображается текст "Ничего не найдено".
+### Search Results
+- **Live Search**: Search should start immediately as characters are typed.
+- **Filtering Logic**: 
+    - Search is performed based on any match in the product name (even a single letter).
+    - If matches are found, a list of all matching products is displayed (in card format, similar to the category screen).
+- **Empty State**: 
+    - If no matches are found for the entered query, "Nothing found" text is displayed.
 
-## Авторизация и Регистрация (Auth & Registration)
+## Auth & Registration
 
-### Экран Входа (Login Screen)
-- **Методы входа**:
-    1.  **Email + Пароль**: Поля для ввода почты и пароля, кнопка "Войти".
-    2.  **Google Auth**: Кнопка быстрого входа через Google аккаунт.
-- **Переход**: Ссылка "Зарегистрироваться" для новых пользователей.
+### Login Screen
+- **Login Methods**:
+    1.  **Email + Password**: Fields for email and password, "Login" button.
+    2.  **Google Auth**: Quick login button via Google account.
+- **Transition**: "Register" link for new users.
 
-### Экран Регистрации (Registration Screen)
-- **Поля для ввода**:
-    1.  **Имя**: Текстовое поле для ввода имени пользователя.
-    2.  **Телефон**: Поле для ввода номера телефона (с маской).
-    3.  **E-mail**: Поле для ввода адреса электронной почты.
-    4.  **Пароль**: Поле для создания пароля.
-- **Согласие**: Чекбокс "Согласен с условиями обработки персональных данных" (обязателен для активации кнопки регистрации).
-- **Альтернативный вход**: Возможность регистрации через **Google аккаунт**.
-- **Кнопка**: "Зарегистрироваться" (становится активной после заполнения всех обязательных полей и принятия условий).
+### Registration Screen
+- **Input Fields**:
+    1.  **Name**: Text field for user's name.
+    2.  **Phone**: Field for phone number (with mask).
+    3.  **Email**: Field for email address.
+    4.  **Password**: Field for creating a password.
+- **Consent**: "I agree to the terms of personal data processing" checkbox (required to activate the registration button).
+- **Alternative Sign-up**: Registration via **Google account**.
+- **Button**: "Register" (becomes active after all required fields are filled and terms are accepted).
 
-## Профиль (Profile Screen)
+## Profile Screen
 
-### Верхняя часть (User Header)
-- **Аватарка**: Круглая иконка пользователя. В центре круга расположена стандартная иконка "человека" (User icon).
-- **Информация**:
-    - Имя пользователя.
-    - E-mail адрес.
+### User Header
+- **Avatar**: Circular user icon. A standard "User" icon is located in the center of the circle.
+- **Information**:
+    - Username.
+    - Email address.
 
-### Основные пункты меню
-1.  **Последние заказы**: Переход к списку истории заказов.
-2.  **Выбор языка**: Переключатель или выпадающий список. Доступные языки:
-    - **Узбекский**
-    - **Русский**
-    - **Английский**
+### Main Menu Items
+1.  **Recent Orders**: Navigate to the order history list.
+2.  **Language Selection**: Switcher or dropdown. Available languages:
+    - **Uzbek**
+    - **Russian**
+    - **English**
 
-### Информационный блок
-1.  **О приложении**: Информация о проекте.
-2.  **Публичная оферта**: Юридический документ.
-3.  **Политика конфиденциальности**: Условия обработки данных.
-4.  **Версия приложения**: `1.0.0` (статичный текст в нижней части экрана).
+### Information Block
+1.  **About the App**: Project information.
+2.  **Public Offer**: Legal document.
+3.  **Privacy Policy**: Data processing terms.
+4.  **App Version**: `1.0.0` (static text at the bottom of the screen).
 
-## Корзина (Cart Screen)
+## Cart Screen
 
-### Хедер (Header / AppBar)
-- **Слева**: Иконка "Назад".
-- **По центру**: Заголовок "Корзина".
-- **Справа**: Кнопка "Очистить корзину".
-    - При нажатии появляется **Pop-up (диалоговое окно)** с вопросом: "Действительно ли вы хотите очистить корзину?". Варианты: Да / Отмена.
+### Header (Header / AppBar)
+- **Left**: "Back" icon.
+- **Center**: "Cart" title.
+- **Right**: "Clear Cart" button.
+    - Action: Displays a **Pop-up (dialog window)** asking: "Are you sure you want to clear the cart?". Options: Yes / Cancel.
 
-### Список товаров
-- Товары отображаются списком (по одному в ряд).
-- **Состав строки товара**:
-    - Слева: Миниатюра изображения.
-    - Справа: Название продукта, цена за единицу (например, "5600 SOM").
-    - Кнопка "Удалить" (иконка корзины или крестик) для каждого товара.
+### Product List
+- Products displayed in a list (one per row).
+- **Product Row Components**:
+    - Left: Thumbnail image.
+    - Right: Product name, unit price (e.g., "5600 SOM").
+    - "Delete" button (trash icon or X) for each product.
 
-### Нижняя панель (Pinned Bottom Bar)
-- **Информационный текст**: "У вас [X] товара стоимостью [Y] SOM".
-- **Кнопка**: "Оформить заказ" (большая, акцентная).
-- **Валидация**:
-    - Если в корзине есть товары со статусом "Нет в наличии", кнопка "Оформить заказ" блокируется.
-    - Выводится предупреждение: "Пожалуйста, удалите из корзины товары, которые сейчас недоступны".
+### Pinned Bottom Bar
+- **Information Text**: "You have [X] items costing [Y] SOM".
+- **Button**: "Checkout" (large, accent button).
+- **Validation**:
+    - If there are "Out of Stock" items in the cart, the "Checkout" button is disabled.
+    - A warning is displayed: "Please remove unavailable items from the cart".
 
-## Оформление заказа (Checkout Screen)
+## Checkout Screen
 
-### Разделы экрана
-1.  **Адрес доставки**:
-    - Интерактивная плашка/блок "Адрес доставки".
-    - При нажатии открывается экран или окно для ввода/выбора адреса.
-2.  **Дата доставки**:
-    - Выбор через табы или переключатели: **Сегодня** / **Завтра**.
-3.  **Время доставки**:
-    - Выбор временного интервала (табы):
+### Screen Sections
+1.  **Delivery Address**:
+    - Interactive "Delivery Address" tile/block.
+    - Action: Opens a screen or window to enter/select an address.
+2.  **Delivery Date**:
+    - Selection via tabs or switchers: **Today** / **Tomorrow**.
+3.  **Delivery Time**:
+    - Time interval selection (tabs):
         - 09:00 - 12:00
         - 12:00 - 15:00
         - 16:00 - 18:00
         - 18:00 - 20:00
-4.  **Способ оплаты**:
-    - Единственный доступный вариант: **Оплата при получении**.
+4.  **Payment Method**:
+    - Only available option: **Payment upon delivery**.
 
-### Кнопка подтверждения
-- Большая кнопка внизу экрана: **"Оформить заказ на [Y] SOM"**.
+### Confirmation Button
+- Large button at the bottom: **"Place Order for [Y] SOM"**.
 
-## Панель администратора (Admin Panel / Web-Interface)
-Для управления магазином используется веб-интерфейс (на базе Supabase Dashboard или отдельного Flutter Web приложения).
+## Admin Panel (Web-Interface)
+A web interface (based on Supabase Dashboard or a separate Flutter Web app) is used for store management.
 
-### Управление товарами (Product Management)
-- **Список товаров**: Просмотр всех позиций с фильтрацией по категориям.
-- **Действия**:
-    - **Добавление**: Создание новой карточки (фото, название, цена, категория).
-    - **Редактирование**: Изменение данных товара.
-    - **Удаление**: Полное удаление товара из базы.
-    - **Пауза (Stock Toggle)**: Возможность скрыть товар из продажи или поставить статус "Нет в наличии".
+### Product Management
+- **Product List**: View all items with filtering by category.
+- **Actions**:
+    - **Add**: Create a new card (photo, name, price, category).
+    - **Edit**: Modify product data.
+    - **Delete**: Permanently remove a product from the database.
+    - **Pause (Stock Toggle)**: Ability to hide a product from sale or set "Out of Stock" status.
 
-### Управление заказами (Order Management)
-- **Текущие и история заказов**: Единый список с фильтрацией по статусу (Новый, В обработке, Завершен).
-- **Поиск**: По номеру заказа или номеру телефона клиента.
-- **Детали заказа**:
-    - Номер заказа.
-    - Список товаров и итоговая сумма.
-    - Адрес, дата и время доставки.
-    - Контактные данные клиента.
+### Order Management
+- **Current and History of Orders**: A single list with filtering by status (New, Processing, Completed).
+- **Search**: By order number or client phone number.
+- **Order Details**:
+    - Order number.
+    - List of products and total amount.
+    - Address, date, and delivery time.
+    - Client contact information.
 
-## Дизайн и UI/UX (Design & UI/UX)
+## Design & UI/UX
 
-### Цветовая палитра
-- **Основной фон**: Чистый белый (#FFFFFF). Создает ощущение чистоты и легкости.
-- **Акцентный зеленый**: Цвет "молодой листвы" или "травяной" зеленый. Используется для основных кнопок и активных элементов.
-- **Темно-зеленый**: Для заголовков и важных элементов навигации.
-- **Светло-зеленый (пастельный)**: Для подложек, индикаторов выбора веса и второстепенных блоков.
+### Color Palette
+- **Main Background**: Pure white (#FFFFFF). Creates a feeling of cleanliness and lightness.
+- **Accent Green**: "Young leaf" or "grassy" green. Used for primary buttons and active elements.
+- **Dark Green**: For headers and important navigation elements.
+- **Light Green (Pastel)**: For backgrounds, weight selection indicators, and secondary blocks.
 
-### Визуальный стиль
-- **Концепция**: Легкий, современный, "диджитальный" дизайн с упором на качественный визуальный контент.
-- **Карточки и изображения**: Большие, сочные фотографии продуктов. Скругление углов у карточек (BorderRadius) должно быть мягким (16-24 dp).
-- **Типографика**: Использование современных гротескных шрифтов (например, Inter, Montserrat или SF Pro). Четкая иерархия заголовков.
-- **UX-ориентиры**: Вдохновение интерфейсами ведущих сервисов доставки (Яндекс.Доставка, Wolt, Glovo). Приоритет — минимальное количество кликов до покупки.
+### Visual Style
+- **Concept**: Light, modern, "digital" design with an emphasis on high-quality visual content.
+- **Cards and Images**: Large, juicy product photos. Corner rounding for cards (BorderRadius) should be soft (16-24 dp).
+- **Typography**: Use of modern sans-serif fonts (e.g., Inter, Montserrat, or SF Pro). Clear header hierarchy.
+- **UX Benchmarks**: Inspiration from leading delivery service interfaces (Yandex.Delivery, Wolt, Glovo). Priority is minimizing clicks to purchase.
 
-### Анимации и микровзаимодействия
-- **Плавность**: Использование `Hero` анимаций при переходе с карточки товара на экран деталей.
-- **Обратная связь**: Мягкие анимации нажатия кнопок, плавное появление элементов списка.
-- **Библиотеки**: Рекомендуется использование `Lottie` для иконок-подтверждений (например, после оформления заказа) и `Animate Do` для простых анимаций появления.
+### Animations and Micro-interactions
+- **Smoothness**: Use of `Hero` animations when transitioning from a product card to the details screen.
+- **Feedback**: Soft button press animations, smooth appearance of list items.
+- **Libraries**: `Lottie` is recommended for confirmation icons (e.g., after placing an order) and `Animate Do` for simple entrance animations.
 
-## Технические требования
-- **Язык программирования**: Dart.
-- **Фреймворк**: Flutter.
-- **Управление состоянием (State Management)**: Provider.
-- **Анимации**: `flutter_animate`, `lottie`.
-- **Backend (Бэкенд)**: Supabase.
-    - **Авторизация**: Supabase Auth (Email/Password, Google).
-    - **База данных**: PostgreSQL (через Supabase).
-    - **Хранение данных (Storage)**: Supabase Storage (для изображений товаров и аватарок).
-- **Интеграция с Telegram**:
-    - Уведомления о новых заказах должны поступать в Telegram-бота.
-    - Реализация: Через **Supabase Edge Functions** (триггер на создание нового заказа в БД отправляет запрос к Telegram Bot API).
-- **Ассеты**: Все изображения категорий должны быть размещены в директории `assets/images/`.
-- **Скролл**: Реализация `ScrollController` или специализированных библиотек для синхронизации табов и позиции скролла (Anchor scrolling).
+## Technical Requirements
+- **Programming Language**: Dart.
+- **Framework**: Flutter.
+- **State Management**: Provider.
+- **Animations**: `flutter_animate`, `lottie`.
+- **Backend**: Supabase.
+    - **Authentication**: Supabase Auth (Email/Password, Google).
+    - **Database**: PostgreSQL (via Supabase).
+    - **Storage**: Supabase Storage (for product images and avatars).
+- **Telegram Integration**:
+    - Notifications of new orders should be sent to a Telegram bot.
+    - Implementation: Via **Supabase Edge Functions** (a database trigger on new order creation sends a request to the Telegram Bot API).
+- **Assets**: All category images should be placed in the `assets/images/` directory.
+- **Scrolling**: Implementation of `ScrollController` or specialized libraries for synchronizing tabs and scroll position (Anchor scrolling).
 
-## Уведомления (Notifications)
-Для реализации пуш-уведомлений предлагаются следующие варианты (необходимо выбрать один):
+## Notifications
+The following options are proposed for push notification implementation (choose one):
 
-1.  **Firebase Cloud Messaging (FCM)** — *Рекомендуемый вариант*.
-    - Стандарт индустрии для Android и iOS.
-    - Отличная интеграция с Flutter через `firebase_messaging`.
-    - Возможность отправки уведомлений через Supabase Edge Functions.
+1.  **Firebase Cloud Messaging (FCM)** — *Recommended option*.
+    - Industry standard for Android and iOS.
+    - Excellent integration with Flutter via `firebase_messaging`.
+    - Ability to send notifications via Supabase Edge Functions.
 2.  **OneSignal**.
-    - Простая настройка и удобная панель управления рассылками.
-    - Хорошая поддержка Flutter.
-    - Платно при больших объемах, но удобно для маркетинговых пушей.
+    - Simple setup and convenient campaign management dashboard.
+    - Good Flutter support.
+    - Paid for large volumes, but convenient for marketing pushes.
 3.  **Supabase Realtime + Local Notifications**.
-    - Позволяет обновлять данные в приложении мгновенно, когда оно открыто.
-    - В сочетании с `flutter_local_notifications` может имитировать пуши, но полноценные фоновые уведомления лучше делать через FCM.
+    - Allows for instant data updates in the app when it is open.
+    - Combined with `flutter_local_notifications`, it can simulate pushes, but FCM is better for full background notifications.
