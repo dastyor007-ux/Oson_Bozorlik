@@ -6,6 +6,7 @@ import '../models/subcategory_model.dart';
 import '../theme/app_theme.dart';
 import '../widgets/product_card.dart';
 import 'product_detail_screen.dart';
+import 'search_screen.dart';
 
 class CategoryScreen extends StatefulWidget {
   final CategoryModel category;
@@ -188,7 +189,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             ),
             onPressed: () {
-              // TODO: Navigate to search screen
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const SearchScreen()));
             },
           ),
         ),

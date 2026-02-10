@@ -6,6 +6,8 @@ import '../theme/app_theme.dart';
 import '../widgets/category_card.dart';
 import 'cart_screen.dart';
 import 'category_screen.dart';
+import 'placeholder_screen.dart';
+import 'search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -41,7 +43,9 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton:
           FloatingActionButton(
             onPressed: () {
-              // TODO: Navigate to search screen
+              Navigator.of(
+                context,
+              ).push(MaterialPageRoute(builder: (_) => const SearchScreen()));
             },
             backgroundColor: AppColors.accentGreen,
             elevation: 4,
@@ -162,7 +166,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             onPressed: () {
-              // TODO: Open notifications
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const PlaceholderScreen(
+                    title: 'Уведомления',
+                    icon: Icons.notifications_none_rounded,
+                    message: 'Пока нет уведомлений',
+                    subtitle: 'Мы сообщим о важных событиях',
+                  ),
+                ),
+              );
             },
           ),
         ),
@@ -295,10 +308,74 @@ class _HomeScreenState extends State<HomeScreen> {
               ).push(MaterialPageRoute(builder: (_) => const CartScreen()));
             },
           ),
-          _buildDrawerItem(Icons.history_rounded, 'История заказов'),
-          _buildDrawerItem(Icons.favorite_outline_rounded, 'Избранное'),
-          _buildDrawerItem(Icons.location_on_outlined, 'Мои адреса'),
-          _buildDrawerItem(Icons.language_rounded, 'Выбор языка'),
+          _buildDrawerItem(
+            Icons.history_rounded,
+            'История заказов',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const PlaceholderScreen(
+                    title: 'История заказов',
+                    icon: Icons.history_rounded,
+                    message: 'Пока нет истории заказов',
+                    subtitle: 'Ваши заказы появятся здесь',
+                  ),
+                ),
+              );
+            },
+          ),
+          _buildDrawerItem(
+            Icons.favorite_outline_rounded,
+            'Избранное',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const PlaceholderScreen(
+                    title: 'Избранное',
+                    icon: Icons.favorite_outline_rounded,
+                    message: 'Пока нет избранных товаров',
+                    subtitle: 'Добавляйте товары, чтобы не потерять',
+                  ),
+                ),
+              );
+            },
+          ),
+          _buildDrawerItem(
+            Icons.location_on_outlined,
+            'Мои адреса',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const PlaceholderScreen(
+                    title: 'Мои адреса',
+                    icon: Icons.location_on_outlined,
+                    message: 'Пока нет сохранённых адресов',
+                    subtitle: 'Добавьте адрес для быстрой доставки',
+                  ),
+                ),
+              );
+            },
+          ),
+          _buildDrawerItem(
+            Icons.language_rounded,
+            'Выбор языка',
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (_) => const PlaceholderScreen(
+                    title: 'Выбор языка',
+                    icon: Icons.language_rounded,
+                    message: 'Пока доступен один язык',
+                    subtitle: 'Другие языки появятся позже',
+                  ),
+                ),
+              );
+            },
+          ),
           const Divider(indent: 24, endIndent: 24, height: 40),
           _buildDrawerItem(
             Icons.phone_outlined,
