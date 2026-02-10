@@ -65,10 +65,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         return Icons.bakery_dining_outlined;
       case 'tea_coffee':
         return Icons.coffee_outlined;
+      case 'meat':
+        return Icons.set_meal_outlined;
+      case 'sausage':
+        return Icons.lunch_dining_outlined;
       case 'hygiene':
         return Icons.cleaning_services_outlined;
       case 'drinks':
         return Icons.local_drink_outlined;
+      case 'snacks':
+        return Icons.fastfood_outlined;
       default:
         return Icons.shopping_basket_outlined;
     }

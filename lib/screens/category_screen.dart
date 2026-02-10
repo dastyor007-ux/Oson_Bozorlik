@@ -43,6 +43,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   void _onScroll() {
+    if (_subcategories.isEmpty) {
+      return;
+    }
     if (_isTabTap) return;
 
     final pos = _scrollController.position;
@@ -86,6 +89,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
   }
 
   void _scrollToSection(int tabIndex) async {
+    if (_subcategories.isEmpty) {
+      return;
+    }
     setState(() {
       _selectedTabIndex = tabIndex;
       _isTabTap = true;
@@ -107,17 +113,19 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final slivers = <Widget>[
+      _buildAppBar(context),
+      if (_subcategories.isNotEmpty) _buildSubcategoryTabs(),
+      if (_subcategories.isNotEmpty) ..._buildProductSections(),
+      if (_subcategories.isEmpty) _buildEmptyState(),
+      const SliverToBoxAdapter(child: SizedBox(height: 40)),
+    ];
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         controller: _scrollController,
         physics: const BouncingScrollPhysics(),
-        slivers: [
-          _buildAppBar(context),
-          _buildSubcategoryTabs(),
-          ..._buildProductSections(),
-          const SliverToBoxAdapter(child: SizedBox(height: 40)),
-        ],
+        slivers: slivers,
       ),
     );
   }
@@ -195,6 +203,41 @@ class _CategoryScreenState extends State<CategoryScreen> {
         tabNames: _subcategories.map((s) => s.name).toList(),
         selectedIndex: _selectedTabIndex,
         onTabTap: _scrollToSection,
+      ),
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return SliverFillRemaining(
+      hasScrollBody: false,
+      child: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.inventory_2_outlined,
+              size: 48,
+              color: AppColors.textSecondary.withValues(alpha: 0.5),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Пока нет товаров',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textSecondary.withValues(alpha: 0.8),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Мы скоро пополним каталог',
+              style: TextStyle(
+                fontSize: 13,
+                color: AppColors.textSecondary.withValues(alpha: 0.6),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

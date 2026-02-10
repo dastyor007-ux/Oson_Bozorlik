@@ -167,6 +167,10 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildBottomBar(BuildContext context, CartProvider cart) {
     final canCheckout = !cart.hasUnavailableItems;
+    final productTotal = cart.totalPrice.toInt();
+    final deliveryFee = cart.deliveryFee;
+    final total = cart.totalWithDelivery;
+    final weightLabel = _formatWeight(cart.totalWeightKg);
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -200,27 +204,14 @@ class CartScreen extends StatelessWidget {
             ),
           ),
           // Info text
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'У вас ${cart.itemCount} ${_itemsWord(cart.itemCount)}',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.textSecondary,
-                ),
-              ),
-              Text(
-                '${cart.totalPrice.toInt()} SOM',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.darkGreen,
-                ),
-              ),
-            ],
+          _buildSummaryRow(
+            'Товары (${cart.itemCount} ${_itemsWord(cart.itemCount)})',
+            '$productTotal SOM',
           ),
+          const SizedBox(height: 6),
+          _buildSummaryRow('Доставка ($weightLabel)', '$deliveryFee SOM'),
+          const SizedBox(height: 10),
+          _buildSummaryRow('Итого', '$total SOM', isTotal: true),
           if (cart.hasUnavailableItems) ...[
             const SizedBox(height: 10),
             Container(
@@ -350,6 +341,48 @@ class CartScreen extends StatelessWidget {
       return 'товара';
     }
     return 'товаров';
+  }
+
+  String _formatWeight(double weightKg) {
+    if (weightKg < 1) {
+      return '${(weightKg * 1000).round()} г';
+    }
+    final rounded = weightKg == weightKg.roundToDouble()
+        ? weightKg.toStringAsFixed(0)
+        : weightKg.toStringAsFixed(1);
+    return '$rounded кг';
+  }
+
+  Widget _buildSummaryRow(String label, String value, {bool isTotal = false}) {
+    final valueStyle = isTotal
+        ? const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            color: AppColors.darkGreen,
+          )
+        : TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textSecondary.withValues(alpha: 0.9),
+          );
+    final labelStyle = isTotal
+        ? const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          )
+        : TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textSecondary.withValues(alpha: 0.9),
+          );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: labelStyle),
+        Text(value, style: valueStyle),
+      ],
+    );
   }
 }
 
@@ -647,10 +680,16 @@ class _CartItemCard extends StatelessWidget {
         return Icons.bakery_dining_outlined;
       case 'tea_coffee':
         return Icons.coffee_outlined;
+      case 'meat':
+        return Icons.set_meal_outlined;
+      case 'sausage':
+        return Icons.lunch_dining_outlined;
       case 'hygiene':
         return Icons.cleaning_services_outlined;
       case 'drinks':
         return Icons.local_drink_outlined;
+      case 'snacks':
+        return Icons.fastfood_outlined;
       default:
         return Icons.shopping_basket_outlined;
     }

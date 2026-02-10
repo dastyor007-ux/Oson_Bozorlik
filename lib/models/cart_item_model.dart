@@ -10,6 +10,8 @@ class CartItemModel {
 
   double get totalPrice => product.price * quantity;
 
+  double get totalWeightKg => product.weightPerUnitKg * quantity;
+
   String get quantityLabel {
     if (product.unit == 'кг') {
       if (quantity < 1) {

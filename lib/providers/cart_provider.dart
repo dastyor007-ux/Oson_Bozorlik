@@ -16,6 +16,13 @@ class CartProvider extends ChangeNotifier {
 
   double get totalPrice => _items.fold(0, (sum, item) => sum + item.totalPrice);
 
+  double get totalWeightKg =>
+      _items.fold(0, (sum, item) => sum + item.totalWeightKg);
+
+  int get deliveryFee => _deliveryFeeForWeight(totalWeightKg);
+
+  int get totalWithDelivery => totalPrice.toInt() + deliveryFee;
+
   bool get hasUnavailableItems =>
       _items.any((item) => !item.product.isAvailable);
 
@@ -121,5 +128,18 @@ class CartProvider extends ChangeNotifier {
     _items.clear();
     notifyListeners();
     _saveCart();
+  }
+
+  int _deliveryFeeForWeight(double weightKg) {
+    if (weightKg <= 0) return 0;
+    if (weightKg <= 10) return 10000;
+    if (weightKg <= 30) return 15000;
+    if (weightKg <= 50) return 20000;
+    if (weightKg <= 70) return 25000;
+    if (weightKg <= 90) return 30000;
+
+    final extraWeight = weightKg - 90;
+    final extraSteps = (extraWeight / 20).ceil();
+    return 30000 + extraSteps * 5000;
   }
 }

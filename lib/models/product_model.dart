@@ -8,6 +8,7 @@ class ProductModel {
   final bool isAvailable;
   final String unit; // 'кг', 'шт', etc.
   final String description;
+  final double weightPerUnitKg; // For delivery cost calculation
 
   const ProductModel({
     required this.id,
@@ -19,6 +20,7 @@ class ProductModel {
     this.isAvailable = true,
     this.unit = 'кг',
     this.description = '',
+    this.weightPerUnitKg = 1.0,
   });
 
   static const List<ProductModel> mockProducts = [

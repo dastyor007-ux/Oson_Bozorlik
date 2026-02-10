@@ -14,9 +14,10 @@ class CheckoutScreen extends StatefulWidget {
 class _CheckoutScreenState extends State<CheckoutScreen> {
   int _selectedDateIndex = 0;
   int? _selectedTimeIndex = 0;
+  int _selectedPaymentIndex = 0;
 
   List<String> get _dateLabels {
-    final now = DateTime.now();
+    final now = _tashkentNow;
     final tomorrow = now.add(const Duration(days: 1));
     return [
       'Сегодня (${_formatDate(now)})',
@@ -25,10 +26,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   final List<String> _timeSlots = const [
-    '09:00 - 12:00',
-    '12:00 - 15:00',
-    '16:00 - 18:00',
-    '18:00 - 20:00',
+    '08:00 - 10:00',
+    '10:00 - 12:00',
+    '13:00 - 15:00',
+    '15:00 - 17:00',
+    '17:00 - 20:00',
   ];
 
   DateTime get _tashkentNow {
@@ -38,21 +40,24 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   DateTime _slotStartToday(int index) {
     final now = _tashkentNow;
     final startHour = _timeSlotStartHour(index);
-    return DateTime(now.year, now.month, now.day, startHour);
+    // Keep all comparisons in the same "Tashkent time" frame.
+    return DateTime.utc(now.year, now.month, now.day, startHour);
   }
 
   int _timeSlotStartHour(int index) {
     switch (index) {
       case 0:
-        return 9;
+        return 8;
       case 1:
-        return 12;
+        return 10;
       case 2:
-        return 16;
+        return 13;
       case 3:
-        return 18;
+        return 15;
+      case 4:
+        return 17;
       default:
-        return 9;
+        return 8;
     }
   }
 
@@ -106,19 +111,20 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   physics: const BouncingScrollPhysics(),
-                  children: [
-                    _buildAddressSection(),
-                    const SizedBox(height: 12),
-                    _buildDateSection(),
-                    const SizedBox(height: 12),
-                    _buildTimeSection(),
-                    const SizedBox(height: 12),
-                    _buildPaymentSection(),
-                    const SizedBox(height: 24),
-                  ]
-                      .animate(interval: 60.ms)
-                      .fadeIn(duration: 300.ms)
-                      .slideY(begin: 0.05, end: 0),
+                  children:
+                      [
+                            _buildAddressSection(),
+                            const SizedBox(height: 12),
+                            _buildDateSection(),
+                            const SizedBox(height: 12),
+                            _buildTimeSection(),
+                            const SizedBox(height: 12),
+                            _buildPaymentSection(),
+                            const SizedBox(height: 24),
+                          ]
+                          .animate(interval: 60.ms)
+                          .fadeIn(duration: 300.ms)
+                          .slideY(begin: 0.05, end: 0),
                 ),
               ),
               _buildBottomBar(context, cart),
@@ -217,9 +223,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       decoration: BoxDecoration(
         color: AppColors.white,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(
-          color: AppColors.lightGreen.withValues(alpha: 0.25),
-        ),
+        border: Border.all(color: AppColors.lightGreen.withValues(alpha: 0.25)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -356,8 +360,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     color: isSelected
                         ? AppColors.accentGreen
                         : isAvailable
-                            ? AppColors.paleGreen
-                            : AppColors.divider.withValues(alpha: 0.4),
+                        ? AppColors.paleGreen
+                        : AppColors.divider.withValues(alpha: 0.4),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
@@ -368,8 +372,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       color: isSelected
                           ? AppColors.white
                           : isAvailable
-                              ? AppColors.darkGreen
-                              : AppColors.textSecondary.withValues(alpha: 0.6),
+                          ? AppColors.darkGreen
+                          : AppColors.textSecondary.withValues(alpha: 0.6),
                     ),
                   ),
                 ),
@@ -405,57 +409,88 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Widget _buildPaymentSection() {
+    final options = const [
+      _PaymentOption(
+        label: 'Наличные при получении',
+        icon: Icons.payments_outlined,
+      ),
+      _PaymentOption(
+        label: 'Картой при получении',
+        icon: Icons.credit_card_rounded,
+      ),
+    ];
+
     return _buildCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildSectionHeader('Оплата', Icons.payments_outlined),
           const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-            decoration: BoxDecoration(
-              color: AppColors.paleGreen.withValues(alpha: 0.6),
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(
-                color: AppColors.lightGreen.withValues(alpha: 0.4),
-              ),
-            ),
-            child: Row(
-              children: [
-                const Icon(
-                  Icons.local_shipping_outlined,
-                  size: 18,
-                  color: AppColors.darkGreen,
-                ),
-                const SizedBox(width: 8),
-                const Expanded(
-                  child: Text(
-                    'Оплата при получении',
-                    style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+          Column(
+            children: List.generate(options.length, (index) {
+              final option = options[index];
+              final isSelected = _selectedPaymentIndex == index;
+              return GestureDetector(
+                onTap: () => setState(() => _selectedPaymentIndex = index),
+                child: Container(
+                  margin: EdgeInsets.only(
+                    bottom: index == options.length - 1 ? 0 : 8,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.paleGreen.withValues(alpha: 0.6),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                      color: isSelected
+                          ? AppColors.accentGreen
+                          : AppColors.lightGreen.withValues(alpha: 0.4),
                     ),
                   ),
-                ),
-                Container(
-                  width: 22,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    color: AppColors.accentGreen,
-                    shape: BoxShape.circle,
+                  child: Row(
+                    children: [
+                      Icon(option.icon, size: 18, color: AppColors.darkGreen),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          option.label,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                      _buildPaymentCheck(isSelected),
+                    ],
                   ),
-                  child: const Icon(
-                    Icons.check,
-                    size: 14,
-                    color: AppColors.white,
-                  ),
                 ),
-              ],
-            ),
+              );
+            }),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPaymentCheck(bool isSelected) {
+    return Container(
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        color: isSelected ? AppColors.accentGreen : AppColors.white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: isSelected
+              ? AppColors.accentGreen
+              : AppColors.lightGreen.withValues(alpha: 0.5),
+        ),
+      ),
+      child: isSelected
+          ? const Icon(Icons.check, size: 14, color: AppColors.white)
+          : null,
     );
   }
 
@@ -464,7 +499,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         cart.items.isNotEmpty &&
         !cart.hasUnavailableItems &&
         _selectedTimeIndex != null;
-    final total = cart.totalPrice.toInt();
+    final productTotal = cart.totalPrice.toInt();
+    final deliveryFee = cart.deliveryFee;
+    final total = cart.totalWithDelivery;
+    final weightLabel = _formatWeight(cart.totalWeightKg);
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -528,6 +566,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
             const SizedBox(height: 12),
           ],
+          _buildSummaryRow('Товары', '$productTotal SOM'),
+          const SizedBox(height: 6),
+          _buildSummaryRow('Доставка ($weightLabel)', '$deliveryFee SOM'),
+          const SizedBox(height: 10),
+          _buildSummaryRow('Итого', '$total SOM', isTotal: true),
+          const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             height: 54,
@@ -562,4 +606,53 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
     );
   }
+
+  String _formatWeight(double weightKg) {
+    if (weightKg < 1) {
+      return '${(weightKg * 1000).round()} г';
+    }
+    final rounded = weightKg == weightKg.roundToDouble()
+        ? weightKg.toStringAsFixed(0)
+        : weightKg.toStringAsFixed(1);
+    return '$rounded кг';
+  }
+
+  Widget _buildSummaryRow(String label, String value, {bool isTotal = false}) {
+    final valueStyle = isTotal
+        ? const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            color: AppColors.darkGreen,
+          )
+        : TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textSecondary.withValues(alpha: 0.9),
+          );
+    final labelStyle = isTotal
+        ? const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: AppColors.textPrimary,
+          )
+        : TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w500,
+            color: AppColors.textSecondary.withValues(alpha: 0.9),
+          );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: labelStyle),
+        Text(value, style: valueStyle),
+      ],
+    );
+  }
+}
+
+class _PaymentOption {
+  final String label;
+  final IconData icon;
+
+  const _PaymentOption({required this.label, required this.icon});
 }
