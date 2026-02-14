@@ -159,6 +159,7 @@ class ProductModel {
       price: 3000,
       imagePath: 'assets/images/dill.png',
       unit: 'шт',
+      weightPerUnitKg: 0.05,
       description:
           'Свежий ароматный укроп. Незаменимая зелень для салатов, супов и гарниров.',
     ),
@@ -170,6 +171,7 @@ class ProductModel {
       price: 3000,
       imagePath: 'assets/images/parsley.png',
       unit: 'шт',
+      weightPerUnitKg: 0.05,
       description:
           'Свежая петрушка с ярким вкусом и ароматом. Отлично дополняет блюда и салаты.',
     ),
@@ -226,6 +228,7 @@ class ProductModel {
       price: 16000,
       imagePath: 'assets/images/eggs.png',
       unit: 'шт',
+      weightPerUnitKg: 0.6,
       description:
           'Свежие куриные яйца категории С1. Упаковка 10 штук. Незаменимый продукт на каждый день.',
     ),
@@ -237,6 +240,7 @@ class ProductModel {
       price: 18000,
       imagePath: 'assets/images/butter.png',
       unit: 'шт',
+      weightPerUnitKg: 0.2,
       description:
           'Натуральное сливочное масло 82.5% жирности. Изготовлено из свежих сливок.',
     ),
@@ -248,6 +252,7 @@ class ProductModel {
       price: 22000,
       imagePath: 'assets/images/oil.png',
       unit: 'шт',
+      weightPerUnitKg: 1.0,
       description:
           'Рафинированное подсолнечное масло для жарки и заправки. Без запаха и осадка.',
     ),
@@ -261,6 +266,7 @@ class ProductModel {
       price: 8000,
       imagePath: 'assets/images/flour.png',
       unit: 'шт',
+      weightPerUnitKg: 1.0,
       description:
           'Пшеничная мука высшего сорта. Идеальна для выпечки хлеба, лепёшек и кондитерских изделий.',
     ),
@@ -282,6 +288,7 @@ class ProductModel {
       price: 14000,
       imagePath: 'assets/images/buckwheat.png',
       unit: 'шт',
+      weightPerUnitKg: 1.0,
       description:
           'Гречневая крупа ядрица. Богата железом и белком, отличный гарнир для здорового питания.',
     ),
@@ -293,6 +300,7 @@ class ProductModel {
       price: 9000,
       imagePath: 'assets/images/pasta.png',
       unit: 'шт',
+      weightPerUnitKg: 0.45,
       description:
           'Спагетти из твёрдых сортов пшеницы. Быстро готовятся, сохраняют форму при варке.',
     ),
@@ -306,6 +314,7 @@ class ProductModel {
       price: 12000,
       imagePath: 'assets/images/green_tea.png',
       unit: 'шт',
+      weightPerUnitKg: 0.1,
       description:
           'Листовой зелёный чай с мягким вкусом и освежающим ароматом. Богат антиоксидантами.',
     ),
@@ -317,6 +326,7 @@ class ProductModel {
       price: 10000,
       imagePath: 'assets/images/black_tea.png',
       unit: 'шт',
+      weightPerUnitKg: 0.1,
       description:
           'Классический чёрный чай с насыщенным вкусом и бодрящим эффектом. Идеален для утреннего чаепития.',
     ),
@@ -328,6 +338,7 @@ class ProductModel {
       price: 35000,
       imagePath: 'assets/images/coffee.png',
       unit: 'шт',
+      weightPerUnitKg: 0.25,
       description:
           'Молотый кофе средней обжарки из отборных зёрен арабики. Насыщенный аромат и глубокий вкус.',
     ),
@@ -339,6 +350,7 @@ class ProductModel {
       price: 28000,
       imagePath: 'assets/images/instant_coffee.png',
       unit: 'шт',
+      weightPerUnitKg: 0.1,
       description:
           'Растворимый кофе для быстрого приготовления. Сохраняет аромат и вкус натурального кофе.',
     ),
@@ -352,6 +364,7 @@ class ProductModel {
       price: 5000,
       imagePath: 'assets/images/soap.png',
       unit: 'шт',
+      weightPerUnitKg: 0.09,
       description:
           'Туалетное мыло с нежным ароматом. Бережно очищает кожу, не пересушивая её.',
     ),
@@ -363,6 +376,7 @@ class ProductModel {
       price: 15000,
       imagePath: 'assets/images/toothpaste.png',
       unit: 'шт',
+      weightPerUnitKg: 0.12,
       description:
           'Зубная паста с фтором для комплексной защиты зубов и дёсен. Освежает дыхание.',
     ),
@@ -374,6 +388,7 @@ class ProductModel {
       price: 12000,
       imagePath: 'assets/images/dish_soap.png',
       unit: 'шт',
+      weightPerUnitKg: 0.5,
       description:
           'Эффективное средство для мытья посуды. Легко удаляет жир, бережно к коже рук.',
     ),
@@ -385,6 +400,7 @@ class ProductModel {
       price: 25000,
       imagePath: 'assets/images/detergent.png',
       unit: 'шт',
+      weightPerUnitKg: 1.0,
       description:
           'Универсальный стиральный порошок для всех типов тканей. Эффективно удаляет пятна при любой температуре.',
     ),
@@ -398,6 +414,7 @@ class ProductModel {
       price: 4000,
       imagePath: 'assets/images/water.png',
       unit: 'шт',
+      weightPerUnitKg: 1.5,
       description:
           'Чистая питьевая вода из горных источников. Без газа, идеальна для ежедневного потребления.',
     ),
@@ -409,6 +426,7 @@ class ProductModel {
       price: 5000,
       imagePath: 'assets/images/sparkling_water.png',
       unit: 'шт',
+      weightPerUnitKg: 1.0,
       description:
           'Природная газированная вода с приятным освежающим вкусом. Утоляет жажду в любое время.',
     ),
@@ -420,6 +438,7 @@ class ProductModel {
       price: 14000,
       imagePath: 'assets/images/apple_juice.png',
       unit: 'шт',
+      weightPerUnitKg: 1.0,
       description:
           'Натуральный яблочный сок прямого отжима. Без добавления сахара и консервантов.',
     ),
@@ -431,6 +450,7 @@ class ProductModel {
       price: 16000,
       imagePath: 'assets/images/orange_juice.png',
       unit: 'шт',
+      weightPerUnitKg: 1.0,
       description:
           'Свежий апельсиновый сок, богатый витамином C. Яркий цитрусовый вкус для бодрого утра.',
     ),
@@ -442,6 +462,7 @@ class ProductModel {
       price: 10000,
       imagePath: 'assets/images/cola.png',
       unit: 'шт',
+      weightPerUnitKg: 1.0,
       description:
           'Классическая кола с карамельным вкусом и приятной газацией. Подавать охлаждённой.',
     ),
@@ -453,6 +474,7 @@ class ProductModel {
       price: 7000,
       imagePath: 'assets/images/lemonade.png',
       unit: 'шт',
+      weightPerUnitKg: 0.5,
       description:
           'Освежающий лимонад с натуральным вкусом лимона. Лёгкая газация, идеален в жаркую погоду.',
     ),

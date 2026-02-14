@@ -5,8 +5,9 @@ import 'package:oson_bozorlik/main.dart';
 void main() {
   testWidgets('App renders home screen', (WidgetTester tester) async {
     await tester.pumpWidget(const OsonBozorlikApp());
+    await tester.pumpAndSettle();
 
-    expect(find.text('Выберите адрес'), findsOneWidget);
-    expect(find.text('Выберите категорию товаров'), findsOneWidget);
+    expect(find.text('Зарафшан'), findsOneWidget);
+    expect(find.text('Фрукты'), findsOneWidget);
   });
 }

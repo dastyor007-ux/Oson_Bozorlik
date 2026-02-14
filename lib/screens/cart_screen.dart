@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_strings.dart';
 import '../models/cart_item_model.dart';
 import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
@@ -19,7 +20,9 @@ class CartScreen extends StatelessWidget {
             children: [
               _buildAppBar(context, cart),
               Expanded(
-                child: cart.isEmpty ? _buildEmptyState() : _buildCartList(cart),
+                child: cart.isEmpty
+                    ? _buildEmptyState(context)
+                    : _buildCartList(cart),
               ),
               if (!cart.isEmpty) _buildBottomBar(context, cart),
             ],
@@ -66,9 +69,9 @@ class CartScreen extends StatelessWidget {
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            const Expanded(
+            Expanded(
               child: Text(
-                'Корзина',
+                context.strings.t('cart'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
@@ -104,7 +107,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
     return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -123,8 +126,8 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                'Корзина пуста',
+              Text(
+                context.strings.t('cartEmptyTitle'),
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
@@ -133,7 +136,7 @@ class CartScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Добавьте товары из каталога',
+                context.strings.t('cartEmptySubtitle'),
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -167,10 +170,11 @@ class CartScreen extends StatelessWidget {
 
   Widget _buildBottomBar(BuildContext context, CartProvider cart) {
     final canCheckout = !cart.hasUnavailableItems;
+    final strings = context.strings;
     final productTotal = cart.totalPrice.toInt();
     final deliveryFee = cart.deliveryFee;
     final total = cart.totalWithDelivery;
-    final weightLabel = _formatWeight(cart.totalWeightKg);
+    final weightLabel = _formatWeight(context, cart.totalWeightKg);
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -205,13 +209,16 @@ class CartScreen extends StatelessWidget {
           ),
           // Info text
           _buildSummaryRow(
-            'Товары (${cart.itemCount} ${_itemsWord(cart.itemCount)})',
+            '${strings.t('products')} (${cart.itemCount} ${strings.itemsWord(cart.itemCount)})',
             '$productTotal SOM',
           ),
           const SizedBox(height: 6),
-          _buildSummaryRow('Доставка ($weightLabel)', '$deliveryFee SOM'),
+          _buildSummaryRow(
+            '${strings.t('delivery')} ($weightLabel)',
+            '$deliveryFee SOM',
+          ),
           const SizedBox(height: 10),
-          _buildSummaryRow('Итого', '$total SOM', isTotal: true),
+          _buildSummaryRow(strings.t('total'), '$total SOM', isTotal: true),
           if (cart.hasUnavailableItems) ...[
             const SizedBox(height: 10),
             Container(
@@ -232,7 +239,7 @@ class CartScreen extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Удалите недоступные товары из корзины',
+                      strings.t('removeUnavailable'),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -271,7 +278,7 @@ class CartScreen extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Оформить заказ',
+                strings.t('checkout'),
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
@@ -290,8 +297,8 @@ class CartScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          'Очистить корзину?',
+        title: Text(
+          context.strings.t('clearCartTitle'),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
@@ -299,14 +306,14 @@ class CartScreen extends StatelessWidget {
           ),
         ),
         content: Text(
-          'Вы уверены, что хотите очистить корзину?',
+          context.strings.t('clearCartMessage'),
           style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
             child: Text(
-              'Отмена',
+              context.strings.t('cancel'),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -320,7 +327,7 @@ class CartScreen extends StatelessWidget {
               Navigator.of(ctx).pop();
             },
             child: Text(
-              'Да',
+              context.strings.t('yes'),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -333,24 +340,8 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  String _itemsWord(int count) {
-    if (count % 10 == 1 && count % 100 != 11) return 'товар';
-    if (count % 10 >= 2 &&
-        count % 10 <= 4 &&
-        (count % 100 < 10 || count % 100 >= 20)) {
-      return 'товара';
-    }
-    return 'товаров';
-  }
-
-  String _formatWeight(double weightKg) {
-    if (weightKg < 1) {
-      return '${(weightKg * 1000).round()} г';
-    }
-    final rounded = weightKg == weightKg.roundToDouble()
-        ? weightKg.toStringAsFixed(0)
-        : weightKg.toStringAsFixed(1);
-    return '$rounded кг';
+  String _formatWeight(BuildContext context, double weightKg) {
+    return context.strings.weightLabel(weightKg);
   }
 
   Widget _buildSummaryRow(String label, String value, {bool isTotal = false}) {
@@ -395,6 +386,7 @@ class _CartItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isOutOfStock = !item.product.isAvailable;
+    final strings = context.strings;
 
     return Opacity(
           opacity: isOutOfStock ? 0.55 : 1.0,
@@ -449,7 +441,7 @@ class _CartItemCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              'Нет в наличии',
+                              strings.t('outOfStock'),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 8,
@@ -469,7 +461,7 @@ class _CartItemCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        item.product.name,
+                        strings.productName(item.product),
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -481,7 +473,7 @@ class _CartItemCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        '${item.product.price.toInt()} SOM / ${item.product.unit == 'кг' ? '1 кг' : item.product.unit}',
+                        '${item.product.price.toInt()} SOM / ${strings.unitWithOne(item.product.unit)}',
                         style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
@@ -500,7 +492,7 @@ class _CartItemCard extends StatelessWidget {
                                       _showDeleteItemDialog(
                                         context,
                                         item.product.id,
-                                        item.product.name,
+                                        strings.productName(item.product),
                                       );
                                     } else {
                                       context
@@ -513,7 +505,10 @@ class _CartItemCard extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Text(
-                              item.quantityLabel,
+                              strings.quantityLabel(
+                                item.quantity,
+                                item.product.unit,
+                              ),
                               style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -561,7 +556,7 @@ class _CartItemCard extends StatelessWidget {
                   onTap: () => _showDeleteItemDialog(
                     context,
                     item.product.id,
-                    item.product.name,
+                    strings.productName(item.product),
                   ),
                   child: Container(
                     width: 32,
@@ -595,8 +590,8 @@ class _CartItemCard extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          'Удалить товар?',
+        title: Text(
+          context.strings.t('removeProductTitle'),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
@@ -604,14 +599,14 @@ class _CartItemCard extends StatelessWidget {
           ),
         ),
         content: Text(
-          'Вы уверены, что хотите удалить "$productName" из корзины?',
+          context.strings.tr('removeProductMessage', {'name': productName}),
           style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
             child: Text(
-              'Отмена',
+              context.strings.t('cancel'),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -625,7 +620,7 @@ class _CartItemCard extends StatelessWidget {
               Navigator.of(ctx).pop();
             },
             child: Text(
-              'Да',
+              context.strings.t('yes'),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,

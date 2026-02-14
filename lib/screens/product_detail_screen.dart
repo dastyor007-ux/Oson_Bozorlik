@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_strings.dart';
 import '../models/product_model.dart';
 import '../providers/cart_provider.dart';
+import '../providers/favorites_provider.dart';
 import '../theme/app_theme.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -26,13 +28,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   String get _quantityLabel {
-    if (widget.product.unit == 'кг') {
-      if (_quantity < 1) {
-        return '${(_quantity * 1000).toInt()} г';
-      }
-      return '${_quantity.toStringAsFixed(_quantity == _quantity.roundToDouble() ? 0 : 1)} кг';
-    }
-    return '${_quantity.toInt()} ${widget.product.unit}';
+    return context.strings.quantityLabel(_quantity, widget.product.unit);
   }
 
   String get _totalLabel {
@@ -129,35 +125,46 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                   actions: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16),
-                      child: GestureDetector(
-                        onTap: () {
-                          // TODO: Share or Favorite
-                        },
-                        child: Container(
-                          width: 40,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: AppColors.white.withValues(alpha: 0.9),
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.08),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
+                    Consumer<FavoritesProvider>(
+                      builder: (context, favorites, _) {
+                        final isFavorite = favorites.isFavorite(
+                          widget.product.id,
+                        );
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 16),
+                          child: GestureDetector(
+                            onTap: () {
+                              favorites.toggleFavorite(widget.product.id);
+                            },
+                            child: Container(
+                              width: 40,
+                              height: 40,
+                              decoration: BoxDecoration(
+                                color: AppColors.white.withValues(alpha: 0.9),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.08),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.favorite_border_rounded,
-                              color: AppColors.darkGreen,
-                              size: 20,
+                              child: Center(
+                                child: Icon(
+                                  isFavorite
+                                      ? Icons.favorite_rounded
+                                      : Icons.favorite_border_rounded,
+                                  color: isFavorite
+                                      ? Colors.red.shade400
+                                      : AppColors.darkGreen,
+                                  size: 20,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     ),
                   ],
                   flexibleSpace: FlexibleSpaceBar(
@@ -192,7 +199,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   child: Text(
-                                    'Нет в наличии',
+                                    context.strings.t('outOfStock'),
                                     style: TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.w600,
@@ -217,7 +224,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       children: [
                         // Name
                         Text(
-                              widget.product.name,
+                              context.strings.productName(widget.product),
                               style: const TextStyle(
                                 fontSize: 26,
                                 fontWeight: FontWeight.w800,
@@ -248,7 +255,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                '${widget.product.price.toInt()} SOM / ${widget.product.unit == 'кг' ? '1 кг' : widget.product.unit}',
+                                '${widget.product.price.toInt()} SOM / ${context.strings.unitWithOne(widget.product.unit)}',
                                 style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
@@ -268,8 +275,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         const SizedBox(height: 24),
 
                         // Description header
-                        const Text(
-                          'Описание',
+                        Text(
+                          context.strings.t('description'),
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
@@ -283,8 +290,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         // Description text
                         Text(
                           widget.product.description.isNotEmpty
-                              ? widget.product.description
-                              : 'Описание товара скоро появится.',
+                              ? context.strings.productDescription(
+                                  widget.product,
+                                )
+                              : context.strings.t('descriptionSoon'),
                           style: const TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w400,
@@ -400,7 +409,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            '${widget.product.name} добавлен в корзину',
+                            context.strings.tr('addedToCart', {
+                              'name': context.strings.productName(
+                                widget.product,
+                              ),
+                            }),
                           ),
                           backgroundColor: AppColors.accentGreen,
                           behavior: SnackBarBehavior.floating,
@@ -426,10 +439,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ),
               child: Text(
                 isOutOfStock
-                    ? 'Нет в наличии'
+                    ? context.strings.t('outOfStock')
                     : _quantity > 0
-                    ? 'В корзину · $_totalLabel'
-                    : 'Выберите количество',
+                    ? '${context.strings.t('addToCart')} · $_totalLabel'
+                    : context.strings.t('selectQuantity'),
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w700,

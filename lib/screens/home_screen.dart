@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../l10n/app_strings.dart';
 import '../models/category_model.dart';
+import '../providers/app_settings_provider.dart';
+import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/category_card.dart';
 import 'cart_screen.dart';
 import 'category_screen.dart';
+import 'favorites_screen.dart';
 import 'placeholder_screen.dart';
 import 'search_screen.dart';
 
@@ -17,7 +22,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<String> _cities = const ['Зарафшан', 'Учкудук', 'Навои'];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final List<String> _cities = const ['zarafshan', 'uchkuduk', 'navoi'];
   late String _selectedCity;
 
   @override
@@ -29,12 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           _buildAppBar(context),
-          _buildGreeting(context),
           _buildCategoriesList(context),
           const SliverToBoxAdapter(child: SizedBox(height: 100)),
         ],
@@ -129,14 +135,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 dropdownColor: AppColors.white,
                 onChanged: (value) {
-                  if (value == null) return;
+                  if (value == null || value != _cities.first) return;
                   setState(() => _selectedCity = value);
                 },
                 items: _cities
                     .map(
                       (city) => DropdownMenuItem<String>(
                         value: city,
-                        child: Text(city),
+                        enabled: city == _cities.first,
+                        child: Text(
+                          context.strings.cityName(city),
+                          style: TextStyle(
+                            color: city == _cities.first
+                                ? AppColors.textPrimary
+                                : AppColors.textSecondary.withValues(
+                                    alpha: 0.45,
+                                  ),
+                          ),
+                        ),
                       ),
                     )
                     .toList(),
@@ -146,73 +162,70 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 8),
-          child: IconButton(
-            icon: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.accentGreen.withValues(alpha: 0.15),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.lightGreen.withValues(alpha: 0.2),
-                  width: 1,
+        Consumer<CartProvider>(
+          builder: (context, cart, _) {
+            return Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: IconButton(
+                icon: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.accentGreen.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: AppColors.lightGreen.withValues(alpha: 0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.shopping_cart_outlined,
+                        color: AppColors.darkGreen,
+                        size: 20,
+                      ),
+                    ),
+                    if (cart.itemCount > 0)
+                      Positioned(
+                        right: -2,
+                        top: -2,
+                        child: Container(
+                          constraints: const BoxConstraints(
+                            minWidth: 16,
+                            minHeight: 16,
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          decoration: const BoxDecoration(
+                            color: AppColors.accentGreen,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Text(
+                              cart.itemCount > 99
+                                  ? '99+'
+                                  : cart.itemCount.toString(),
+                              style: const TextStyle(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
                 ),
+                onPressed: () {
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (_) => const CartScreen()));
+                },
               ),
-              child: const Icon(
-                Icons.notifications_none_rounded,
-                color: AppColors.darkGreen,
-                size: 20,
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const PlaceholderScreen(
-                    title: 'Уведомления',
-                    icon: Icons.notifications_none_rounded,
-                    message: 'Пока нет уведомлений',
-                    subtitle: 'Мы сообщим о важных событиях',
-                  ),
-                ),
-              );
-            },
-          ),
+            );
+          },
         ),
       ],
-    );
-  }
-
-  Widget _buildGreeting(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Oson Bozorlik',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w800,
-                color: AppColors.accentGreen,
-                letterSpacing: 1.2,
-              ),
-            ).animate().fadeIn().slideX(begin: -0.2),
-            const SizedBox(height: 8),
-            const Text(
-              'Свежие продукты\nпрямо к вам домой',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
-                height: 1.1,
-                letterSpacing: -0.5,
-              ),
-            ).animate().fadeIn(delay: 100.ms).slideY(begin: 0.2),
-          ],
-        ),
-      ),
     );
   }
 
@@ -238,6 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildDrawer(BuildContext context) {
+    final strings = context.strings;
     return Drawer(
       backgroundColor: AppColors.white,
       shape: const RoundedRectangleBorder(
@@ -272,12 +286,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(width: 16),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Войти в профиль',
+                        strings.t('loginProfile'),
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w700,
@@ -300,83 +314,84 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 16),
           _buildDrawerItem(
             Icons.shopping_cart_outlined,
-            'Корзина',
+            strings.t('cart'),
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(
-                context,
-              ).push(MaterialPageRoute(builder: (_) => const CartScreen()));
+              _navigateFromDrawer(const CartScreen());
+            },
+          ),
+          _buildDrawerItem(
+            Icons.notifications_none_rounded,
+            strings.t('notifications'),
+            onTap: () {
+              _navigateFromDrawer(
+                PlaceholderScreen(
+                  title: strings.t('notifications'),
+                  icon: Icons.notifications_none_rounded,
+                  message: strings.t('notificationsEmpty'),
+                  subtitle: strings.t('notificationsSubtitle'),
+                ),
+              );
             },
           ),
           _buildDrawerItem(
             Icons.history_rounded,
-            'История заказов',
+            strings.t('orderHistory'),
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const PlaceholderScreen(
-                    title: 'История заказов',
-                    icon: Icons.history_rounded,
-                    message: 'Пока нет истории заказов',
-                    subtitle: 'Ваши заказы появятся здесь',
-                  ),
+              _navigateFromDrawer(
+                PlaceholderScreen(
+                  title: strings.t('orderHistory'),
+                  icon: Icons.history_rounded,
+                  message: strings.t('orderHistoryEmpty'),
+                  subtitle: strings.t('orderHistorySubtitle'),
                 ),
               );
             },
           ),
           _buildDrawerItem(
             Icons.favorite_outline_rounded,
-            'Избранное',
+            strings.t('favorites'),
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const PlaceholderScreen(
-                    title: 'Избранное',
-                    icon: Icons.favorite_outline_rounded,
-                    message: 'Пока нет избранных товаров',
-                    subtitle: 'Добавляйте товары, чтобы не потерять',
-                  ),
-                ),
-              );
+              _navigateFromDrawer(const FavoritesScreen());
             },
           ),
           _buildDrawerItem(
             Icons.location_on_outlined,
-            'Мои адреса',
+            strings.t('addresses'),
             onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const PlaceholderScreen(
-                    title: 'Мои адреса',
-                    icon: Icons.location_on_outlined,
-                    message: 'Пока нет сохранённых адресов',
-                    subtitle: 'Добавьте адрес для быстрой доставки',
-                  ),
+              _navigateFromDrawer(
+                PlaceholderScreen(
+                  title: strings.t('addresses'),
+                  icon: Icons.location_on_outlined,
+                  message: strings.t('addressesEmpty'),
+                  subtitle: strings.t('addressesSubtitle'),
                 ),
               );
             },
           ),
           _buildDrawerItem(
             Icons.language_rounded,
-            'Выбор языка',
+            strings.t('language'),
             onTap: () {
               Navigator.of(context).pop();
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => const PlaceholderScreen(
-                    title: 'Выбор языка',
-                    icon: Icons.language_rounded,
-                    message: 'Пока доступен один язык',
-                    subtitle: 'Другие языки появятся позже',
-                  ),
-                ),
-              );
+              _showLanguageSheet(context);
             },
           ),
           const Divider(indent: 24, endIndent: 24, height: 40),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 2, 24, 8),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                strings.t('support'),
+                style: TextStyle(
+                  color: AppColors.textSecondary.withValues(alpha: 0.7),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
+                ),
+              ),
+            ),
+          ),
           _buildDrawerItem(
             Icons.phone_outlined,
             '+998 50 099 33 37',
@@ -393,6 +408,10 @@ class _HomeScreenState extends State<HomeScreen> {
               _openUrl(context, 'https://t.me/osonbozorlik');
             },
           ),
+          const Padding(
+            padding: EdgeInsets.fromLTRB(24, 10, 24, 10),
+            child: Divider(height: 1, color: AppColors.divider),
+          ),
           _buildDrawerItem(
             Icons.camera_alt_outlined,
             'Instagram',
@@ -403,18 +422,10 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           _buildDrawerItem(
             Icons.info_outline_rounded,
-            'О приложении',
+            strings.t('about'),
             onTap: () {
               Navigator.of(context).pop();
               _showAboutSheet(context);
-            },
-          ),
-          _buildDrawerItem(
-            Icons.help_outline_rounded,
-            'Поддержка',
-            onTap: () {
-              Navigator.of(context).pop();
-              _showSupportSheet(context);
             },
           ),
           const Spacer(),
@@ -422,9 +433,9 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(24),
             child: Column(
               children: [
-                const Text(
-                  'Версия 1.0.0',
-                  style: TextStyle(
+                Text(
+                  '${strings.t('version')} 1.0.0',
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: AppColors.textSecondary,
@@ -444,6 +455,19 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  void _navigateFromDrawer(Widget page) {
+    Navigator.of(context).pop();
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => page)).then((
+      _,
+    ) {
+      if (!mounted) return;
+      Future<void>.delayed(const Duration(milliseconds: 120), () {
+        if (!mounted) return;
+        _scaffoldKey.currentState?.openDrawer();
+      });
+    });
   }
 
   Widget _buildDrawerItem(IconData icon, String title, {VoidCallback? onTap}) {
@@ -477,13 +501,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     if (!didLaunch) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Не удалось открыть ссылку')),
+      ScaffoldMessenger.of(this.context).showSnackBar(
+        SnackBar(content: Text(this.context.strings.t('supportOpenFailed'))),
       );
     }
   }
 
-  void _showSupportSheet(BuildContext context) {
+  void _showLanguageSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.white,
@@ -491,6 +515,12 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (context) {
+        final strings = context.strings;
+        final selectedCode = context
+            .watch<AppSettingsProvider>()
+            .locale
+            .languageCode;
+        const options = ['ru', 'uz', 'en'];
         return Padding(
           padding: EdgeInsets.fromLTRB(
             20,
@@ -502,25 +532,50 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Поддержка',
-                style: TextStyle(
+              Text(
+                strings.t('language'),
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 12),
-              _buildInfoRow(Icons.phone, '+998 50 099 33 37'),
-              const SizedBox(height: 8),
-              _buildInfoRow(Icons.send, '@osonbozorlik'),
-              const SizedBox(height: 8),
-              _buildInfoRow(Icons.camera_alt, 'osonbozorlik'),
+              ...options.map((code) {
+                final isSelected = selectedCode == code;
+                return ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(_languageName(code, strings)),
+                  trailing: isSelected
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: AppColors.accentGreen,
+                        )
+                      : null,
+                  onTap: () {
+                    context.read<AppSettingsProvider>().setLocale(code);
+                    Navigator.of(context).pop();
+                  },
+                );
+              }),
             ],
           ),
         );
       },
     );
+  }
+
+  String _languageName(String code, AppStrings strings) {
+    switch (code) {
+      case 'ru':
+        return strings.t('langRu');
+      case 'uz':
+        return strings.t('langUz');
+      case 'en':
+        return strings.t('langEn');
+      default:
+        return code;
+    }
   }
 
   void _showAboutSheet(BuildContext context) {
@@ -542,9 +597,9 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'О приложении',
-                style: TextStyle(
+              Text(
+                context.strings.t('about'),
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: AppColors.textPrimary,
@@ -552,7 +607,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 12),
               Text(
-                'Oson Bozorlik — свежие продукты и товары первой необходимости с доставкой на дом.',
+                context.strings.t('aboutDescription'),
                 style: TextStyle(
                   fontSize: 14,
                   height: 1.4,
@@ -563,31 +618,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildInfoRow(IconData icon, String value) {
-    return Row(
-      children: [
-        Container(
-          width: 34,
-          height: 34,
-          decoration: BoxDecoration(
-            color: AppColors.paleGreen,
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, size: 18, color: AppColors.accentGreen),
-        ),
-        const SizedBox(width: 10),
-        Text(
-          value,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
-        ),
-      ],
     );
   }
 }

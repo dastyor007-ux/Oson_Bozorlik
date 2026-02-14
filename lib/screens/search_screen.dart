@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../l10n/app_strings.dart';
+import '../models/product_model.dart';
+import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
+import 'cart_screen.dart';
+import 'product_detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -22,9 +28,23 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {});
   }
 
+  List<ProductModel> _filteredProducts() {
+    final strings = context.strings;
+    final query = _controller.text.trim().toLowerCase();
+    if (query.isEmpty) return const [];
+    return ProductModel.mockProducts.where((product) {
+      final name = strings.productName(product).toLowerCase();
+      final description = strings.productDescription(product).toLowerCase();
+      return name.contains(query) || description.contains(query);
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final strings = context.strings;
     final hasQuery = _controller.text.trim().isNotEmpty;
+    final products = _filteredProducts();
+
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -51,9 +71,9 @@ class _SearchScreenState extends State<SearchScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         centerTitle: true,
-        title: const Text(
-          'Поиск',
-          style: TextStyle(
+        title: Text(
+          strings.t('search'),
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
             color: AppColors.textPrimary,
@@ -70,7 +90,7 @@ class _SearchScreenState extends State<SearchScreen> {
               onChanged: (_) => setState(() {}),
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(
-                hintText: 'Поиск товаров',
+                hintText: strings.t('searchProducts'),
                 hintStyle: TextStyle(
                   color: AppColors.textSecondary.withValues(alpha: 0.6),
                 ),
@@ -116,44 +136,273 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           ),
           Expanded(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.search_off_rounded,
-                      size: 56,
-                      color: AppColors.textSecondary.withValues(alpha: 0.5),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      'Пока ничего не найдено',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textSecondary,
+            child: hasQuery && products.isNotEmpty
+                ? ListView.separated(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+                    itemBuilder: (context, index) {
+                      return _SearchProductTile(product: products[index]);
+                    },
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(height: 10),
+                    itemCount: products.length,
+                  )
+                : Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.search_off_rounded,
+                            size: 56,
+                            color: AppColors.textSecondary.withValues(
+                              alpha: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            strings.t('nothingFound'),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            hasQuery
+                                ? strings.t('tryDifferentQuery')
+                                : strings.t('enterQuery'),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textSecondary.withValues(
+                                alpha: 0.7,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 8),
+                  ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Consumer<CartProvider>(
+        builder: (context, cart, _) {
+          if (cart.totalPrice <= 0) return const SizedBox.shrink();
+          return Container(
+            padding: EdgeInsets.fromLTRB(
+              16,
+              10,
+              16,
+              MediaQuery.of(context).padding.bottom + 10,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.06),
+                  blurRadius: 12,
+                  offset: const Offset(0, -2),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        strings.t('sumOrder'),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary.withValues(alpha: 0.8),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      Text(
+                        '${cart.totalPrice.toInt()} SOM',
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.darkGreen,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 46,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const CartScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.accentGreen,
+                      foregroundColor: AppColors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: Text(strings.t('openCart')),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _SearchProductTile extends StatelessWidget {
+  const _SearchProductTile({required this.product});
+
+  final ProductModel product;
+
+  @override
+  Widget build(BuildContext context) {
+    final cart = context.watch<CartProvider>();
+    final strings = context.strings;
+    final quantity = cart.getQuantity(product.id);
+    final step = product.unit == 'кг' ? 0.5 : 1.0;
+
+    return Material(
+      color: AppColors.white,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => ProductDetailScreen(product: product),
+            ),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(
+              color: AppColors.lightGreen.withValues(alpha: 0.28),
+            ),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 46,
+                height: 46,
+                decoration: BoxDecoration(
+                  color: AppColors.paleGreen,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(
+                  Icons.shopping_basket_outlined,
+                  color: AppColors.accentGreen.withValues(alpha: 0.65),
+                  size: 22,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      hasQuery
-                          ? 'Попробуйте изменить запрос'
-                          : 'Введите запрос для поиска',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: AppColors.textSecondary.withValues(alpha: 0.7),
+                      strings.productName(product),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${product.price.toInt()} SOM / ${strings.unitWithOne(product.unit)}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                        color: AppColors.darkGreen,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
+              const SizedBox(width: 6),
+              _QtyButton(
+                icon: Icons.remove,
+                onTap: quantity > 0
+                    ? () => cart.setItem(product, quantity - step)
+                    : null,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: Text(
+                  strings.quantityLabel(quantity, product.unit),
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+              _QtyButton(
+                icon: Icons.add,
+                isPrimary: true,
+                onTap: product.isAvailable
+                    ? () => cart.setItem(product, quantity + step)
+                    : null,
+              ),
+            ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+}
+
+class _QtyButton extends StatelessWidget {
+  const _QtyButton({
+    required this.icon,
+    required this.onTap,
+    this.isPrimary = false,
+  });
+
+  final IconData icon;
+  final VoidCallback? onTap;
+  final bool isPrimary;
+
+  @override
+  Widget build(BuildContext context) {
+    final enabled = onTap != null;
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: enabled
+              ? (isPrimary
+                    ? AppColors.accentGreen
+                    : AppColors.accentGreen.withValues(alpha: 0.15))
+              : AppColors.divider.withValues(alpha: 0.35),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(
+          icon,
+          size: 14,
+          color: enabled
+              ? (isPrimary ? AppColors.white : AppColors.darkGreen)
+              : AppColors.textSecondary.withValues(alpha: 0.5),
+        ),
       ),
     );
   }

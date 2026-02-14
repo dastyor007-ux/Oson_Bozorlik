@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:provider/provider.dart';
+import '../l10n/app_strings.dart';
 import '../models/category_model.dart';
 import '../models/product_model.dart';
 import '../models/subcategory_model.dart';
+import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/product_card.dart';
+import 'cart_screen.dart';
 import 'product_detail_screen.dart';
 import 'search_screen.dart';
 
@@ -128,6 +132,81 @@ class _CategoryScreenState extends State<CategoryScreen> {
         physics: const BouncingScrollPhysics(),
         slivers: slivers,
       ),
+      bottomNavigationBar: Consumer<CartProvider>(
+        builder: (context, cart, _) {
+          if (cart.totalPrice <= 0) return const SizedBox.shrink();
+          return _buildOrderTotalBar(context, cart);
+        },
+      ),
+    );
+  }
+
+  Widget _buildOrderTotalBar(BuildContext context, CartProvider cart) {
+    final strings = context.strings;
+    return Container(
+      padding: EdgeInsets.fromLTRB(
+        16,
+        10,
+        16,
+        MediaQuery.of(context).padding.bottom + 10,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, -2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  strings.t('sumOrder'),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary.withValues(alpha: 0.8),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${cart.totalPrice.toInt()} SOM',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.darkGreen,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 46,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (_) => const CartScreen()));
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.accentGreen,
+                foregroundColor: AppColors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: Text(strings.t('openCart')),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -160,7 +239,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
       ),
       centerTitle: true,
       title: Text(
-        widget.category.name,
+        context.strings.categoryName(widget.category),
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w700,
@@ -203,7 +282,9 @@ class _CategoryScreenState extends State<CategoryScreen> {
     return SliverPersistentHeader(
       pinned: true,
       delegate: _SubcategoryTabsDelegate(
-        tabNames: _subcategories.map((s) => s.name).toList(),
+        tabNames: _subcategories
+            .map((s) => context.strings.subcategoryName(s))
+            .toList(),
         selectedIndex: _selectedTabIndex,
         onTabTap: _scrollToSection,
       ),
@@ -224,7 +305,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Пока нет товаров',
+              context.strings.t('categoryEmptyTitle'),
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -233,7 +314,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
             ),
             const SizedBox(height: 6),
             Text(
-              'Мы скоро пополним каталог',
+              context.strings.t('categoryEmptySubtitle'),
               style: TextStyle(
                 fontSize: 13,
                 color: AppColors.textSecondary.withValues(alpha: 0.6),
@@ -275,7 +356,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  sub.name,
+                  context.strings.subcategoryName(sub),
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,

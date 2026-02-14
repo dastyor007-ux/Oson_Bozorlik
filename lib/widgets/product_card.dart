@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_strings.dart';
 import '../models/product_model.dart';
 import '../providers/cart_provider.dart';
+import '../providers/favorites_provider.dart';
 import '../theme/app_theme.dart';
 
 class ProductCard extends StatelessWidget {
@@ -14,19 +16,15 @@ class ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isOutOfStock = !product.isAvailable;
 
-    return Consumer<CartProvider>(
-      builder: (context, cart, child) {
+    return Consumer2<CartProvider, FavoritesProvider>(
+      builder: (context, cart, favorites, child) {
         final quantity = cart.getQuantity(product.id);
         final step = product.unit == 'кг' ? 0.5 : 1.0;
+        final isFavorite = favorites.isFavorite(product.id);
+        final strings = context.strings;
 
         String quantityLabel() {
-          if (product.unit == 'кг') {
-            if (quantity < 1) {
-              return '${(quantity * 1000).toInt()} г';
-            }
-            return '${quantity.toStringAsFixed(quantity == quantity.roundToDouble() ? 0 : 1)} кг';
-          }
-          return '${quantity.toInt()} ${product.unit}';
+          return strings.quantityLabel(quantity, product.unit);
         }
 
         String totalLabel() {
@@ -111,7 +109,7 @@ class ProductCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                'Нет в наличии',
+                                strings.t('outOfStock'),
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
@@ -120,6 +118,39 @@ class ProductCard extends StatelessWidget {
                               ),
                             ),
                           ),
+                        Positioned(
+                          top: 8,
+                          right: 8,
+                          child: GestureDetector(
+                            onTap: () {
+                              favorites.toggleFavorite(product.id);
+                            },
+                            child: Container(
+                              width: 30,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: AppColors.white.withValues(alpha: 0.92),
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.08),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Icon(
+                                isFavorite
+                                    ? Icons.favorite_rounded
+                                    : Icons.favorite_border_rounded,
+                                size: 17,
+                                color: isFavorite
+                                    ? Colors.red.shade400
+                                    : AppColors.darkGreen,
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -132,7 +163,7 @@ class ProductCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            product.name,
+                            strings.productName(product),
                             style: const TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
@@ -144,7 +175,7 @@ class ProductCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            '${product.price.toInt()} SOM / ${product.unit == 'кг' ? '1 кг' : product.unit}',
+                            '${product.price.toInt()} SOM / ${strings.unitWithOne(product.unit)}',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.w700,
@@ -225,8 +256,8 @@ class ProductCard extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Text(
-          'Удалить товар?',
+        title: Text(
+          context.strings.t('removeProductTitle'),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
@@ -234,14 +265,16 @@ class ProductCard extends StatelessWidget {
           ),
         ),
         content: Text(
-          'Вы уверены, что хотите удалить "${product.name}" из корзины?',
+          context.strings.tr('removeProductMessage', {
+            'name': context.strings.productName(product),
+          }),
           style: TextStyle(fontSize: 14, color: AppColors.textSecondary),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
             child: Text(
-              'Отмена',
+              context.strings.t('cancel'),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -255,7 +288,7 @@ class ProductCard extends StatelessWidget {
               Navigator.of(ctx).pop();
             },
             child: Text(
-              'Да',
+              context.strings.t('yes'),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,

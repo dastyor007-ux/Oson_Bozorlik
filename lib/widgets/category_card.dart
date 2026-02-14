@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../l10n/app_strings.dart';
 import '../models/category_model.dart';
 import '../theme/app_theme.dart';
 
@@ -50,7 +51,7 @@ class CategoryCard extends StatelessWidget {
                 right: 16,
                 bottom: 16,
                 child: Text(
-                  category.name,
+                  context.strings.categoryName(category),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(

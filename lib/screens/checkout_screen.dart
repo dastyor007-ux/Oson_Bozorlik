@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
+import '../l10n/app_strings.dart';
 import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
 
@@ -17,11 +18,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   int _selectedPaymentIndex = 0;
 
   List<String> get _dateLabels {
+    final strings = context.strings;
     final now = _tashkentNow;
     final tomorrow = now.add(const Duration(days: 1));
     return [
-      'Сегодня (${_formatDate(now)})',
-      'Завтра (${_formatDate(tomorrow)})',
+      '${strings.t('today')} (${_formatDate(now)})',
+      '${strings.t('tomorrow')} (${_formatDate(tomorrow)})',
     ];
   }
 
@@ -172,9 +174,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               ),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            const Expanded(
+            Expanded(
               child: Text(
-                'Оформление заказа',
+                context.strings.t('orderCheckoutTitle'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
@@ -241,7 +243,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('Адрес доставки', Icons.location_on_outlined),
+          _buildSectionHeader(
+            context.strings.t('deliveryAddress'),
+            Icons.location_on_outlined,
+          ),
           const SizedBox(height: 12),
           GestureDetector(
             onTap: () {
@@ -264,9 +269,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     color: AppColors.darkGreen,
                   ),
                   const SizedBox(width: 8),
-                  const Expanded(
+                  Expanded(
                     child: Text(
-                      'Выберите адрес доставки',
+                      context.strings.t('selectDeliveryAddress'),
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
@@ -292,7 +297,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('Дата доставки', Icons.calendar_today_outlined),
+          _buildSectionHeader(
+            context.strings.t('deliveryDate'),
+            Icons.calendar_today_outlined,
+          ),
           const SizedBox(height: 12),
           Row(
             children: List.generate(_dateLabels.length, (index) {
@@ -339,7 +347,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('Время доставки', Icons.access_time_outlined),
+          _buildSectionHeader(
+            context.strings.t('deliveryTime'),
+            Icons.access_time_outlined,
+          ),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
@@ -392,7 +403,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    'На сегодня доступных интервалов нет — выберите дату завтра.',
+                    context.strings.t('noSlotsToday'),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
@@ -409,13 +420,13 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   }
 
   Widget _buildPaymentSection() {
-    final options = const [
+    final options = [
       _PaymentOption(
-        label: 'Наличные при получении',
+        label: context.strings.t('paymentCash'),
         icon: Icons.payments_outlined,
       ),
       _PaymentOption(
-        label: 'Картой при получении',
+        label: context.strings.t('paymentCard'),
         icon: Icons.credit_card_rounded,
       ),
     ];
@@ -424,7 +435,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader('Оплата', Icons.payments_outlined),
+          _buildSectionHeader(
+            context.strings.t('payment'),
+            Icons.payments_outlined,
+          ),
           const SizedBox(height: 12),
           Column(
             children: List.generate(options.length, (index) {
@@ -502,7 +516,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     final productTotal = cart.totalPrice.toInt();
     final deliveryFee = cart.deliveryFee;
     final total = cart.totalWithDelivery;
-    final weightLabel = _formatWeight(cart.totalWeightKg);
+    final strings = context.strings;
+    final weightLabel = _formatWeight(context, cart.totalWeightKg);
 
     return Container(
       padding: EdgeInsets.fromLTRB(
@@ -553,7 +568,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      'Удалите недоступные товары из корзины',
+                      strings.t('removeUnavailable'),
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
@@ -566,11 +581,14 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             ),
             const SizedBox(height: 12),
           ],
-          _buildSummaryRow('Товары', '$productTotal SOM'),
+          _buildSummaryRow(strings.t('products'), '$productTotal SOM'),
           const SizedBox(height: 6),
-          _buildSummaryRow('Доставка ($weightLabel)', '$deliveryFee SOM'),
+          _buildSummaryRow(
+            '${strings.t('delivery')} ($weightLabel)',
+            '$deliveryFee SOM',
+          ),
           const SizedBox(height: 10),
-          _buildSummaryRow('Итого', '$total SOM', isTotal: true),
+          _buildSummaryRow(strings.t('total'), '$total SOM', isTotal: true),
           const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
@@ -593,7 +611,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
               ),
               child: Text(
-                'Оформить заказ на $total SOM',
+                strings.tr('checkoutForTotal', {'total': total.toString()}),
                 style: const TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -607,14 +625,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     );
   }
 
-  String _formatWeight(double weightKg) {
-    if (weightKg < 1) {
-      return '${(weightKg * 1000).round()} г';
-    }
-    final rounded = weightKg == weightKg.roundToDouble()
-        ? weightKg.toStringAsFixed(0)
-        : weightKg.toStringAsFixed(1);
-    return '$rounded кг';
+  String _formatWeight(BuildContext context, double weightKg) {
+    return context.strings.weightLabel(weightKg);
   }
 
   Widget _buildSummaryRow(String label, String value, {bool isTotal = false}) {
