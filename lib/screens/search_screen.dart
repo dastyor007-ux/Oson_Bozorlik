@@ -4,6 +4,7 @@ import '../l10n/app_strings.dart';
 import '../models/product_model.dart';
 import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_image.dart';
 import 'cart_screen.dart';
 import 'product_detail_screen.dart';
 
@@ -32,7 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final strings = context.strings;
     final query = _controller.text.trim().toLowerCase();
     if (query.isEmpty) return const [];
-    return ProductModel.mockProducts.where((product) {
+    return ProductModel.products.where((product) {
       final name = strings.productName(product).toLowerCase();
       final description = strings.productDescription(product).toLowerCase();
       return name.contains(query) || description.contains(query);
@@ -303,10 +304,17 @@ class _SearchProductTile extends StatelessWidget {
                   color: AppColors.paleGreen,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(
-                  Icons.shopping_basket_outlined,
-                  color: AppColors.accentGreen.withValues(alpha: 0.65),
-                  size: 22,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: AppImage(
+                    path: product.imagePath,
+                    fit: BoxFit.cover,
+                    placeholder: Icon(
+                      Icons.shopping_basket_outlined,
+                      color: AppColors.accentGreen.withValues(alpha: 0.65),
+                      size: 22,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 10),

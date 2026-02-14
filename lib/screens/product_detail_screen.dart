@@ -6,6 +6,7 @@ import '../models/product_model.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favorites_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_image.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final ProductModel product;
@@ -176,12 +177,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         ),
                         child: Stack(
                           children: [
-                            Center(
-                              child: Icon(
-                                _getCategoryIcon(widget.product.categoryId),
-                                size: 120,
-                                color: AppColors.accentGreen.withValues(
-                                  alpha: 0.3,
+                            Positioned.fill(
+                              child: AppImage(
+                                path: widget.product.imagePath,
+                                fit: BoxFit.cover,
+                                placeholder: Center(
+                                  child: Icon(
+                                    _getCategoryIcon(widget.product.categoryId),
+                                    size: 120,
+                                    color: AppColors.accentGreen.withValues(
+                                      alpha: 0.3,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

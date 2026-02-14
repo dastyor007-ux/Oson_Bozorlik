@@ -31,7 +31,8 @@ class ProductModel {
       subCategoryId: 'local',
       name: 'Яблоко золотое местное',
       price: 12000,
-      imagePath: 'assets/images/apple_gold.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1560806887-1e4cd0b6bccb?auto=format&fit=crop&q=80&w=800',
       description:
           'Сочное яблоко золотистого сорта, выращенное в местных садах. Отличается сладким вкусом с лёгкой кислинкой и хрустящей текстурой.',
     ),
@@ -41,7 +42,8 @@ class ProductModel {
       subCategoryId: 'local',
       name: 'Груша Дюшес',
       price: 15000,
-      imagePath: 'assets/images/pear.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1514756331096-242f3900ef8e?auto=format&fit=crop&q=80&w=800',
       description:
           'Ароматная груша сорта Дюшес с нежной маслянистой мякотью. Идеально подходит для свежего употребления и десертов.',
     ),
@@ -51,7 +53,8 @@ class ProductModel {
       subCategoryId: 'local',
       name: 'Виноград кишмиш',
       price: 22000,
-      imagePath: 'assets/images/grape.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1537044640250-6e99c3628054?auto=format&fit=crop&q=80&w=800',
       description:
           'Бескосточковый виноград сорта кишмиш. Сладкие и сочные ягоды, богатые витаминами и антиоксидантами.',
     ),
@@ -62,7 +65,8 @@ class ProductModel {
       subCategoryId: 'citrus',
       name: 'Апельсин импортный',
       price: 25000,
-      imagePath: 'assets/images/orange.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1557800636-894a64c1696f?auto=format&fit=crop&q=80&w=800',
       description:
           'Крупный сочный апельсин с ярким цитрусовым ароматом. Богат витамином C, идеален для свежевыжатого сока.',
     ),
@@ -72,7 +76,8 @@ class ProductModel {
       subCategoryId: 'citrus',
       name: 'Лимон Ташкент',
       price: 18000,
-      imagePath: 'assets/images/lemon.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1585059895312-5e8d2105886c?auto=format&fit=crop&q=80&w=800',
       description:
           'Ташкентский лимон с тонкой кожурой и насыщенным кислым вкусом. Незаменим на кухне и для приготовления напитков.',
     ),
@@ -82,7 +87,8 @@ class ProductModel {
       subCategoryId: 'citrus',
       name: 'Мандарин Марокко',
       price: 28000,
-      imagePath: 'assets/images/mandarin.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1559181567-c3190ca9959b?auto=format&fit=crop&q=80&w=800',
       description:
           'Сладкие марокканские мандарины с тонкой кожурой, легко чистятся. Отличный перекус, богатый витаминами.',
     ),
@@ -93,7 +99,8 @@ class ProductModel {
       subCategoryId: 'tropical',
       name: 'Банан Эквадор',
       price: 18000,
-      imagePath: 'assets/images/banana.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1571771894821-ce9b6c11b0be?auto=format&fit=crop&q=80&w=800',
       isAvailable: false,
       description:
           'Спелые бананы из Эквадора. Сладкие, питательные и богатые калием — идеальный источник энергии.',
@@ -104,7 +111,8 @@ class ProductModel {
       subCategoryId: 'tropical',
       name: 'Манго Индия',
       price: 45000,
-      imagePath: 'assets/images/mango.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1553279768-865429fa0078?auto=format&fit=crop&q=80&w=800',
       description:
           'Экзотическое индийское манго с сочной сладкой мякотью и ярким тропическим ароматом.',
     ),
@@ -114,7 +122,8 @@ class ProductModel {
       subCategoryId: 'tropical',
       name: 'Ананас',
       price: 38000,
-      imagePath: 'assets/images/pineapple.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1550258114-68bd67f66c9d?auto=format&fit=crop&q=80&w=800',
       description:
           'Свежий тропический ананас с кисло-сладким вкусом. Идеально подходит для десертов и фруктовых салатов.',
     ),
@@ -245,12 +254,147 @@ class ProductModel {
           'Натуральное сливочное масло 82.5% жирности. Изготовлено из свежих сливок.',
     ),
     ProductModel(
+      id: '10',
+      categoryId: 'vegetables',
+      subCategoryId: 'root',
+      name: 'Картофель местный',
+      price: 5000,
+      imagePath:
+          'https://images.unsplash.com/photo-1518977676601-b53f82aba655?auto=format&fit=crop&q=80&w=800',
+      description:
+          'Местный картофель отборного качества. Отлично подходит для жарки, варки и запекания.',
+    ),
+    ProductModel(
+      id: '11',
+      categoryId: 'vegetables',
+      subCategoryId: 'root',
+      name: 'Морковь свежая',
+      price: 6000,
+      imagePath:
+          'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?auto=format&fit=crop&q=80&w=800',
+      description:
+          'Свежая сочная морковь, выращенная на местных фермах. Богата бета-каротином и клетчаткой.',
+    ),
+    ProductModel(
+      id: '12',
+      categoryId: 'vegetables',
+      subCategoryId: 'root',
+      name: 'Свёкла',
+      price: 4500,
+      imagePath:
+          'https://images.unsplash.com/photo-1528113517408-529eead18991?auto=format&fit=crop&q=80&w=800',
+      description:
+          'Столовая свёкла насыщенного бордового цвета. Используется для салатов, борщей и свежевыжатых соков.',
+    ),
+    // Овощи — Зелень
+    ProductModel(
+      id: '13',
+      categoryId: 'vegetables',
+      subCategoryId: 'greens',
+      name: 'Укроп пучок',
+      price: 3000,
+      imagePath:
+          'https://images.unsplash.com/photo-1588691338769-906aa6639908?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 0.05,
+      description:
+          'Свежий ароматный укроп. Незаменимая зелень для салатов, супов и гарниров.',
+    ),
+    ProductModel(
+      id: '14',
+      categoryId: 'vegetables',
+      subCategoryId: 'greens',
+      name: 'Петрушка пучок',
+      price: 3000,
+      imagePath:
+          'https://images.unsplash.com/photo-1524179524002-bb040e21b015?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 0.05,
+      description:
+          'Свежая петрушка с ярким вкусом и ароматом. Отлично дополняет блюда и салаты.',
+    ),
+    // Овощи — Томаты и огурцы
+    ProductModel(
+      id: '15',
+      categoryId: 'vegetables',
+      subCategoryId: 'tomatoes_cucumbers',
+      name: 'Помидоры розовые',
+      price: 14000,
+      imagePath:
+          'https://images.unsplash.com/photo-1518977822534-7049a61ee0c2?auto=format&fit=crop&q=80&w=800',
+      description:
+          'Розовые помидоры с нежной мякотью и сладковатым вкусом. Отлично подходят для салатов и нарезки.',
+    ),
+    ProductModel(
+      id: '16',
+      categoryId: 'vegetables',
+      subCategoryId: 'tomatoes_cucumbers',
+      name: 'Огурцы свежие',
+      price: 10000,
+      imagePath:
+          'https://images.unsplash.com/photo-1449333214652-53b1e35ceb20?auto=format&fit=crop&q=80&w=800',
+      description:
+          'Хрустящие свежие огурцы с насыщенным вкусом. Идеальны для салатов и лёгких закусок.',
+    ),
+    // Масло, яйца, молоко
+    ProductModel(
+      id: '17',
+      categoryId: 'dairy',
+      subCategoryId: 'milk',
+      name: 'Молоко 3.2%',
+      price: 12000,
+      imagePath:
+          'https://images.unsplash.com/photo-1550583724-125581cc25bf?auto=format&fit=crop&q=80&w=800',
+      unit: 'л',
+      description:
+          'Натуральное коровье молоко жирностью 3.2%. Свежее, пастеризованное, без добавок.',
+    ),
+    ProductModel(
+      id: '18',
+      categoryId: 'dairy',
+      subCategoryId: 'milk',
+      name: 'Кефир 1%',
+      price: 11000,
+      imagePath:
+          'https://images.unsplash.com/photo-1563636619-e9108b455242?auto=format&fit=crop&q=80&w=800',
+      unit: 'л',
+      description:
+          'Лёгкий кефир жирностью 1%. Полезный кисломолочный продукт для здорового пищеварения.',
+    ),
+    ProductModel(
+      id: '19',
+      categoryId: 'dairy',
+      subCategoryId: 'eggs',
+      name: 'Яйца куриные 10 шт',
+      price: 16000,
+      imagePath:
+          'https://images.unsplash.com/photo-1587486914402-046789a29d5b?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 0.6,
+      description:
+          'Свежие куриные яйца категории С1. Упаковка 10 штук. Незаменимый продукт на каждый день.',
+    ),
+    ProductModel(
+      id: '20',
+      categoryId: 'dairy',
+      subCategoryId: 'butter_oil',
+      name: 'Масло сливочное 200г',
+      price: 18000,
+      imagePath:
+          'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 0.2,
+      description:
+          'Натуральное сливочное масло 82.5% жирности. Изготовлено из свежих сливок.',
+    ),
+    ProductModel(
       id: '21',
       categoryId: 'dairy',
       subCategoryId: 'butter_oil',
       name: 'Масло подсолнечное 1л',
       price: 22000,
-      imagePath: 'assets/images/oil.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1474979266404-7eaacbad71c5?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 1.0,
       description:
@@ -331,12 +475,90 @@ class ProductModel {
           'Классический чёрный чай с насыщенным вкусом и бодрящим эффектом. Идеален для утреннего чаепития.',
     ),
     ProductModel(
+      id: '22',
+      categoryId: 'grains',
+      subCategoryId: 'flour',
+      name: 'Мука пшеничная 1кг',
+      price: 8000,
+      imagePath:
+          'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 1.0,
+      description:
+          'Пшеничная мука высшего сорта. Идеальна для выпечки хлеба, лепёшек и кондитерских изделий.',
+    ),
+    ProductModel(
+      id: '23',
+      categoryId: 'grains',
+      subCategoryId: 'cereals',
+      name: 'Рис длиннозёрный',
+      price: 15000,
+      imagePath:
+          'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&q=80&w=800',
+      description:
+          'Длиннозёрный рис премиум качества. Рассыпчатый после варки, подходит для плова и гарниров.',
+    ),
+    ProductModel(
+      id: '24',
+      categoryId: 'grains',
+      subCategoryId: 'cereals',
+      name: 'Гречка 1кг',
+      price: 14000,
+      imagePath:
+          'https://images.unsplash.com/photo-1590544113947-49591465f210?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 1.0,
+      description:
+          'Гречневая крупа ядрица. Богата железом и белком, отличный гарнир для здорового питания.',
+    ),
+    ProductModel(
+      id: '25',
+      categoryId: 'grains',
+      subCategoryId: 'pasta',
+      name: 'Макароны спагетти',
+      price: 9000,
+      imagePath:
+          'https://images.unsplash.com/photo-1551462147-37885acc3c41?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 0.45,
+      description:
+          'Спагетти из твёрдых сортов пшеницы. Быстро готовятся, сохраняют форму при варке.',
+    ),
+    // Чаи и кофе
+    ProductModel(
+      id: '26',
+      categoryId: 'tea_coffee',
+      subCategoryId: 'tea',
+      name: 'Чай зелёный 100г',
+      price: 12000,
+      imagePath:
+          'https://images.unsplash.com/photo-1564890369478-c89fe219c3fe?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 0.1,
+      description:
+          'Листовой зелёный чай с мягким вкусом и освежающим ароматом. Богат антиоксидантами.',
+    ),
+    ProductModel(
+      id: '27',
+      categoryId: 'tea_coffee',
+      subCategoryId: 'tea',
+      name: 'Чай чёрный 100г',
+      price: 10000,
+      imagePath:
+          'https://images.unsplash.com/photo-1594631252845-29fc4cc8c59b?auto=format&fit=crop&q=80&w=800',
+      unit: 'шт',
+      weightPerUnitKg: 0.1,
+      description:
+          'Классический чёрный чай с насыщенным вкусом и бодрящим эффектом. Идеален для утреннего чаепития.',
+    ),
+    ProductModel(
       id: '28',
       categoryId: 'tea_coffee',
       subCategoryId: 'coffee',
       name: 'Кофе молотый 250г',
       price: 35000,
-      imagePath: 'assets/images/coffee.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1541167760496-162955ed8a9f?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 0.25,
       description:
@@ -348,7 +570,8 @@ class ProductModel {
       subCategoryId: 'coffee',
       name: 'Кофе растворимый 100г',
       price: 28000,
-      imagePath: 'assets/images/instant_coffee.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 0.1,
       description:
@@ -362,7 +585,8 @@ class ProductModel {
       subCategoryId: 'personal',
       name: 'Мыло туалетное',
       price: 5000,
-      imagePath: 'assets/images/soap.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1600857062241-98e5dba7f214?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 0.09,
       description:
@@ -374,7 +598,8 @@ class ProductModel {
       subCategoryId: 'personal',
       name: 'Зубная паста',
       price: 15000,
-      imagePath: 'assets/images/toothpaste.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1559591937-e6205301826d?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 0.12,
       description:
@@ -386,7 +611,8 @@ class ProductModel {
       subCategoryId: 'cleaning',
       name: 'Средство для мытья посуды',
       price: 12000,
-      imagePath: 'assets/images/dish_soap.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1603533871195-af6f1d4b150c?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 0.5,
       description:
@@ -398,7 +624,8 @@ class ProductModel {
       subCategoryId: 'cleaning',
       name: 'Стиральный порошок 1кг',
       price: 25000,
-      imagePath: 'assets/images/detergent.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1584622781564-1d9876a3912a?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 1.0,
       description:
@@ -412,7 +639,8 @@ class ProductModel {
       subCategoryId: 'water',
       name: 'Вода питьевая 1.5л',
       price: 4000,
-      imagePath: 'assets/images/water.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 1.5,
       description:
@@ -424,7 +652,8 @@ class ProductModel {
       subCategoryId: 'water',
       name: 'Вода газированная 1л',
       price: 5000,
-      imagePath: 'assets/images/sparkling_water.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1554467533-06680a656461?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 1.0,
       description:
@@ -436,7 +665,8 @@ class ProductModel {
       subCategoryId: 'juice',
       name: 'Сок яблочный 1л',
       price: 14000,
-      imagePath: 'assets/images/apple_juice.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1613478223719-2ab80260f0a4?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 1.0,
       description:
@@ -448,7 +678,8 @@ class ProductModel {
       subCategoryId: 'juice',
       name: 'Сок апельсиновый 1л',
       price: 16000,
-      imagePath: 'assets/images/orange_juice.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 1.0,
       description:
@@ -460,7 +691,8 @@ class ProductModel {
       subCategoryId: 'soda',
       name: 'Кола 1л',
       price: 10000,
-      imagePath: 'assets/images/cola.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 1.0,
       description:
@@ -472,7 +704,8 @@ class ProductModel {
       subCategoryId: 'soda',
       name: 'Лимонад 0.5л',
       price: 7000,
-      imagePath: 'assets/images/lemonade.png',
+      imagePath:
+          'https://images.unsplash.com/photo-1523362628744-0c10a394ba87?auto=format&fit=crop&q=80&w=800',
       unit: 'шт',
       weightPerUnitKg: 0.5,
       description:
@@ -482,24 +715,34 @@ class ProductModel {
 
   static ProductModel? findById(String id) {
     try {
-      return mockProducts.firstWhere((p) => p.id == id);
+      return _uniqueProducts.firstWhere((p) => p.id == id);
     } catch (_) {
       return null;
     }
   }
 
+  static List<ProductModel> get products => _uniqueProducts;
+
   static List<ProductModel> getByCategoryId(String categoryId) {
-    return mockProducts.where((p) => p.categoryId == categoryId).toList();
+    return _uniqueProducts.where((p) => p.categoryId == categoryId).toList();
   }
 
   static List<ProductModel> getBySubCategoryId(
     String categoryId,
     String subCategoryId,
   ) {
-    return mockProducts
+    return _uniqueProducts
         .where(
           (p) => p.categoryId == categoryId && p.subCategoryId == subCategoryId,
         )
         .toList();
+  }
+
+  static List<ProductModel> get _uniqueProducts {
+    final uniqueMap = <String, ProductModel>{};
+    for (final product in mockProducts) {
+      uniqueMap[product.id] = product;
+    }
+    return uniqueMap.values.toList();
   }
 }

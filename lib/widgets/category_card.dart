@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import '../l10n/app_strings.dart';
 import '../models/category_model.dart';
 import '../theme/app_theme.dart';
+import 'app_image.dart';
 
 class CategoryCard extends StatelessWidget {
   final CategoryModel category;
@@ -32,7 +33,7 @@ class CategoryCard extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              Image.asset(category.imagePath, fit: BoxFit.cover),
+              AppImage(path: category.imagePath, fit: BoxFit.cover),
               DecoratedBox(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(

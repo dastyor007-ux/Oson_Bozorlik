@@ -5,6 +5,7 @@ import '../l10n/app_strings.dart';
 import '../models/cart_item_model.dart';
 import '../providers/cart_provider.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_image.dart';
 import 'checkout_screen.dart';
 
 class CartScreen extends StatelessWidget {
@@ -422,11 +423,22 @@ class _CartItemCard extends StatelessWidget {
                   ),
                   child: Stack(
                     children: [
-                      Center(
-                        child: Icon(
-                          _getCategoryIcon(item.product.categoryId),
-                          size: 32,
-                          color: AppColors.accentGreen.withValues(alpha: 0.4),
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: AppImage(
+                            path: item.product.imagePath,
+                            fit: BoxFit.cover,
+                            placeholder: Center(
+                              child: Icon(
+                                _getCategoryIcon(item.product.categoryId),
+                                size: 32,
+                                color: AppColors.accentGreen.withValues(
+                                  alpha: 0.4,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       if (isOutOfStock)

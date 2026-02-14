@@ -5,6 +5,7 @@ import '../models/product_model.dart';
 import '../providers/cart_provider.dart';
 import '../providers/favorites_provider.dart';
 import '../theme/app_theme.dart';
+import 'app_image.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductModel product;
@@ -84,12 +85,16 @@ class ProductCard extends StatelessWidget {
                                 top: Radius.circular(20),
                               ),
                             ),
-                            child: Center(
-                              child: Icon(
-                                _getCategoryIcon(product.categoryId),
-                                size: 48,
-                                color: AppColors.accentGreen.withValues(
-                                  alpha: 0.4,
+                            child: AppImage(
+                              path: product.imagePath,
+                              fit: BoxFit.cover,
+                              placeholder: Center(
+                                child: Icon(
+                                  _getCategoryIcon(product.categoryId),
+                                  size: 48,
+                                  color: AppColors.accentGreen.withValues(
+                                    alpha: 0.4,
+                                  ),
                                 ),
                               ),
                             ),
